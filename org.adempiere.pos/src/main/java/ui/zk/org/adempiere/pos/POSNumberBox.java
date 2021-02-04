@@ -18,6 +18,7 @@
 package org.adempiere.pos;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
@@ -50,7 +51,7 @@ import org.zkoss.zul.Vbox;
  */
 public class POSNumberBox extends Div
 {
-    	
+
     /**
      * Constructor
      * @param integral
@@ -59,6 +60,18 @@ public class POSNumberBox extends Div
     {
         super();
         this.integral = integral;
+        this.displayType = integral ? DisplayType.Integer : DisplayType.Number;
+        init();
+    }
+    /**
+     * Constructor
+     * @param integral
+     */
+    public POSNumberBox(boolean integral, int displayType)
+    {
+        super();
+        this.integral = integral;
+        this.displayType = displayType;
         init();
     }
     
@@ -90,6 +103,8 @@ public class POSNumberBox extends Div
 	private final String 	HEIGHT 		= "height:30px;";
 	/** Default Font Width					*/
 	private final String 	WIDTH 		= "width:auto;";
+	/** Display Type						*/
+	private int displayType;
     
     private void init()
     {
@@ -115,6 +130,9 @@ public class POSNumberBox extends Div
     	else
         	decimalBox.setStyle("display: inline;text-align:right;width:80px;"+HEIGHT+FONT_SIZE);
     	
+    	DecimalFormat format = DisplayType.getNumberFormat(displayType, AEnv.getLanguage(Env.getCtx()));
+    	decimalBox.setFormat(format.toPattern());
+		
 		td.appendChild(decimalBox);
 		
 		Td btnColumn = new Td();
@@ -162,6 +180,13 @@ public class POSNumberBox extends Div
     	else
     		decimalBox.setValue(new BigDecimal(value.toString()));
     }
+    
+	/**
+	 * Select Text
+	 */
+	public void selectText() {
+		decimalBox.setSelectionRange(0, getText().length());
+	}
     
     /**
      * 
@@ -494,6 +519,7 @@ public class POSNumberBox extends Div
 	@Override
 	public void focus()
 	{
+		selectText();
 		decimalBox.focus();
 	}
 	

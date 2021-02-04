@@ -126,7 +126,7 @@ public class WPOSQuantityPanel extends WPOSSubPanel implements POSPanelInterface
 		Label qtyLabel = new Label(Msg.translate(Env.getCtx(), "QtyOrdered"));
 		row.appendChild(qtyLabel);
 
-		fieldQuantity = new POSNumberBox(false);
+		fieldQuantity = new POSNumberBox(false, DisplayType.Quantity);
 		
 		row.appendChild(fieldQuantity);
 		fieldQuantity.addEventListener(Events.ON_OK, this);
@@ -213,64 +213,50 @@ public class WPOSQuantityPanel extends WPOSSubPanel implements POSPanelInterface
 			}
 			if (e.getTarget().equals(buttonMinus)){
 				BigDecimal quantity = fieldQuantity.getValue().subtract(CurrentQuantity);
-				if(quantity.compareTo(Env.ZERO) == 0) {
-					if(posPanel.isUserPinValid()) {
-						posPanel.setQty(quantity);
-					}
-				} else {
-					posPanel.setQty(quantity);
-				}
+				posPanel.setQty(quantity);
 			}
 			else if (e.getTarget().equals(buttonPlus)){
 				posPanel.setQty(fieldQuantity.getValue().add(CurrentQuantity));
 			}
 			else if (e.getTarget().equals(buttonDelete)){
-				if(posPanel.isUserPinValid()) {
-					posPanel.deleteLine(posPanel.getC_OrderLine_ID());
-
-					posPanel.updateLineTable();
-					posPanel.refreshPanel();
-					return;
-				}
+				posPanel.deleteLine(posPanel.getC_OrderLine_ID());
+				posPanel.updateLineTable();
+				posPanel.refreshPanel();
+				return;
 			}
 			BigDecimal value = Env.ZERO;
-			if(Events.ON_OK.equals(e.getName()) || Events.ON_CHANGE.equals(e.getName())) {
-        
+			if(Events.ON_CHANGE.equals(e.getName())) {
 			  value = fieldQuantity.getValue();
-        if(value == null)
-          return;
-        if(e.getTarget().equals(fieldQuantity.getDecimalbox())) {
-          if(Events.ON_OK.equals(e.getName())){
-            posPanel.setQty(value);
-          }
-          else if(posPanel.isAddQty() 
-              || Events.ON_CHANGE.equals(e.getName())){
-            //  Verify if it add or set
-            if(posPanel.isAddQty()) {
-              posPanel.setQtyAdded(value);
-            } else {
-              posPanel.setQty(value);
-            }
-          }
-          
-        }
-      
-        if (e.getTarget().equals(fieldPrice.getDecimalbox())) {
-          value = fieldPrice.getValue();
-          if(value == null)
-            return;
-          if(posPanel.isUserPinValid()) {
-            posPanel.setPrice(value);
-          }
-        }
-        else if ( e.getTarget().equals(fieldDiscountPercentage.getDecimalbox())) {
-          if(posPanel.isUserPinValid()) {
-            value = fieldDiscountPercentage.getValue();
-            if(value == null)
-              return;
-            posPanel.setDiscountPercentage(value);
-          }
-        }
+			  if(value == null)
+		          return;
+		        if(e.getTarget().equals(fieldPrice.getDecimalbox())) {
+		        	System.out.println(fieldPrice.getValue()+" ");
+        			value = fieldPrice.getValue();
+        			if(value == null)
+        				return;
+        			if(posPanel.isUserPinValid()) {
+        				posPanel.setPrice(value);
+        			}
+        		} else if (e.getTarget().equals(fieldDiscountPercentage.getDecimalbox())) {
+        			value = fieldDiscountPercentage.getValue();
+    				if(value == null)
+    					return;
+        			if(posPanel.isUserPinValid()) {
+        				posPanel.setDiscountPercentage(value);
+        			}
+        		}
+        		else if(e.getTarget().equals(fieldQuantity.getDecimalbox())) {
+	        		value = fieldQuantity.getValue();
+	        		posPanel.setQty(value);
+		        } else if(posPanel.isAddQty() 
+		              || Events.ON_CHANGE.equals(e.getName())){
+		            //  Verify if it add or set
+		        	if(posPanel.isAddQty()) {
+		              posPanel.setQtyAdded(value);
+		            } else {
+		              posPanel.setQty(value);
+		            }
+		        }
 			}
 
 			posPanel.updateLineTable();
@@ -384,7 +370,6 @@ public class WPOSQuantityPanel extends WPOSSubPanel implements POSPanelInterface
 
 	public void setQuantity(BigDecimal value) {
 		fieldQuantity.setValue(value);
-		fieldQuantity.focus();
 	}
 
 	public void requestFocus() {

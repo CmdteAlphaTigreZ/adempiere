@@ -14,35 +14,37 @@
  * Contributor(s): Victor Perez www.e-evolution.com                           *
  * ****************************************************************************/
 
-package org.adempiere.pos.service;
+package org.adempiere.pos.command;
 
-import java.math.BigDecimal;
+import org.compiere.model.MOrder;
+import org.compiere.util.Trx;
+import org.compiere.util.TrxRunnable;
+
 
 /**
- * Interface for POS Lookup Product, allows the implement Lookup Product out of POS
- * eEvolution author Victor Perez <victor.perez@e-evolution.com> , Created by e-Evolution on 17/02/16.
+ * Execute immediate invoice command
+ * eEvolution author Victor Perez <victor.perez@e-evolution.com>, Created by e-Evolution on 23/01/16.
  */
-public interface POSLookupProductInterface {
+public class CommandCopyFromOrder extends CommandAbstract implements Command {
 
-	/**
-	 * Get Product Timer
-	 * @return
-	 * @return Object
-	 */
-    public Object getProductTimer();
-    
-    /**
-     * Find a Product, if it return a item then add 1 to order or 0
-     * @param editQty if is true then add 1 qty to order line else 0
-     * @param productId optional product id for find a specific product
-     * @throws Exception
-     * @return void
-     */
-    public void findProduct(boolean editQty, int productId, BigDecimal qty) throws Exception;
-    
-    /**
-     * Move focust to Quantity
-     * @return void
-     */
-    public void quantityRequestFocus();
+    public CommandCopyFromOrder(String command,String event) {
+
+        super.command = command;
+        super.event = event;
+    }
+
+    @Override
+    public void execute(CommandReceiver commandReceiver) throws Exception {
+        Trx.run(new TrxRunnable() {
+            public void run(String trxName) {
+            	MOrder from = new MOrder (commandReceiver.getCtx(), commandReceiver.getOrderId(), trxName);
+        		MOrder newOrder = MOrder.copyFrom (from, from.getDateAcct(), 
+        				from.getC_DocTypeTarget_ID(), from.isSOTrx(), false, true, trxName);
+        		
+        		boolean OK = newOrder.save();
+        		if (!OK)
+        			throw new IllegalStateException("Could not create new Order");
+            }
+        });
+    }
 }

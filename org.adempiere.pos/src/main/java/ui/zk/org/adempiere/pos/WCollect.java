@@ -31,6 +31,7 @@ import org.adempiere.pos.service.Collect;
 import org.adempiere.pos.service.POSPanelInterface;
 import org.adempiere.webui.component.Borderlayout;
 import org.adempiere.webui.component.Button;
+import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
@@ -136,6 +137,7 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 	private final int 			SCREEN_NORMAL = 907;
 	/**	Default	Screen Large	*/
 	private final int 			SCREEN_LARGE = 1022;
+	private Checkbox        	completeCollect;
 	
 
 	/**
@@ -227,6 +229,16 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 		row.appendChild(fPaidAmt.rightAlign());
 		fPaidAmt.setStyle(FONT_SIZE);
 
+		row = rows.newRow();
+		row.appendChild(new Space());
+		completeCollect = new Checkbox();
+		completeCollect.setLabel(Msg.translate(p_ctx, "IsCompleteCollect"));
+		completeCollect.setStyle(FONT_SIZE+FONT_BOLD);
+		completeCollect.addActionListener(this);
+		row.setAlign("right");
+		row.appendChild(completeCollect);
+		completeCollect.setStyle(FONT_SIZE);
+		
 		// Button Plus
 		bPlus = createButtonAction("Plus", KeyStroke.getKeyStroke(KeyEvent.VK_F3, Event.F3));
 		row = rows.newRow();
@@ -347,9 +359,13 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 			addCollectType();
 			return;
 		}
+		else if(event.getTarget().equals(completeCollect)) {
+			setCompleteCollect(completeCollect.isChecked());
+		}
 		
 		else if ( action.equals(ConfirmPanel.A_OK)) {
 			//	Validate before process
+			confirm.getOKButton().setEnabled(false);
 			String validResult = validatePayment();
 			if(validResult == null) {
 				validResult = executePayment();
@@ -359,12 +375,12 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 				FDialog.warn(0, Msg.parseTranslation(p_ctx, validResult));
 				return;
 			}
-			
 			// Process printing
 			isProcessed = true;
 			if(!posPanel.isStandardOrder() && !posPanel.isWarehouseOrder() && posPanel.isToPrint())
 				printTicketWeb();
 			hidePanel();
+			completeCollect.setSelected(false);
 			posPanel.showKeyboard();
 			posPanel.setOrder(0);
 			posPanel.refreshPanel();
@@ -375,6 +391,7 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 
 		else if ( action.equals(ConfirmPanel.A_CANCEL)) {
 			hidePanel();
+			completeCollect.setSelected(false);
 			posPanel.showKeyboard();
 			posPanel.refreshPanel();
             posPanel.restoreTable();
@@ -395,6 +412,8 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 		collectRowNo = 0;
 		layout.invalidate();
 	}
+	
+	
 	/**
 	 * Process Window
 	 * @return
@@ -499,6 +518,7 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 
 	@Override
 	public String validatePayment() {
+		getCollectDetails().forEach(collectValue -> ((POSPanelInterface) collectValue).validatePayment());
 		String errorMsg = null;
 		if(!posPanel.hasOrder()) {	//	When is not created order
 			errorMsg = "@POS.MustCreateOrder@";
@@ -608,17 +628,10 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 	 *  @return void
 	 */
 	public void printTicketWeb() {	
-		
-		try {
-			//print standard document
-			if (posPanel.isToPrint() && posPanel.hasOrder()) {
-				posPanel.printTicket();
-			}
+		//print standard document
+		if (posPanel.isToPrint() && posPanel.hasOrder()) {
+			posPanel.printTicket();
 		}
-			catch (Exception e) 
-			{
-				log.severe("PrintTicket - Error Printing Ticket");
-			}			  
 	}
 
 	/**
@@ -640,6 +653,7 @@ public class WCollect extends Collect implements WPOSKeyListener, EventListener,
 	}
 	public void showPanel()
 	{
+		confirm.getOKButton().setEnabled(true);
 		mainPanel.setVisible(true);
 	}
 

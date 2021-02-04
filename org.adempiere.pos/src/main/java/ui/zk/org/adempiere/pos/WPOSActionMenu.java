@@ -24,16 +24,14 @@ import org.adempiere.pos.command.Command;
 import org.adempiere.pos.command.CommandManager;
 import org.adempiere.pos.command.CommandReceiver;
 import org.adempiere.pos.search.QueryBPartner;
-import org.adempiere.pos.search.WPOSQuery;
-import org.adempiere.pos.search.WQueryBPartner;
 import org.adempiere.pos.service.POSQueryInterface;
 import org.adempiere.pos.service.POSQueryListener;
-import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.apps.BusyDialog;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MOrder;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -55,7 +53,6 @@ import org.zkoss.zul.Menupopup;
 public class WPOSActionMenu implements  POSQueryListener, EventListener{
 
     private WPOS pos;
-    private WPOSQuery queryPartner;
     private Menupopup popupMenu;
     private CommandManager commandManager;
     private Command currentCommand;
@@ -86,7 +83,9 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
     public void onEvent(Event actionEvent) throws Exception {
         try {
         //popupMenu.setVisible(false);
-        currentCommand = commandManager.getCommand((String)actionEvent.getTarget().getAttribute(EVENT_ATTRIBUTE));
+        if(pos.isUserPinValid()) {
+        	currentCommand = commandManager.getCommand((String)actionEvent.getTarget().getAttribute(EVENT_ATTRIBUTE));
+        }
         beforeExecutionCommand(currentCommand);
         } catch (AdempiereException exception) {
             FDialog.error(pos.getWindowNo(), pos.getForm() , exception.getLocalizedMessage());
@@ -96,12 +95,8 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
     private void beforeExecutionCommand(Command command) throws AdempierePOSException
     {
         if (command.getCommand() == CommandManager.GENERATE_IMMEDIATE_INVOICE) {
-            if (pos.isCompleted()) {
-                queryPartner = new WQueryBPartner(pos);
-                AEnv.showWindow(queryPartner);
-                queryPartner.addOptionListener(this);
-                queryPartner.showView();
-            }
+        	executeCommand(command);
+//            }
         } else if (command.getCommand() == CommandManager.GENERATE_REVERSE_SALES) {
             if (pos.isCompleted())
                 executeCommand(command);
@@ -113,7 +108,13 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
             }
         } else if (command.getCommand() == CommandManager.GENERATE_WITHDRAWAL) {
             executeCommand(command);
+        }  else if (command.getCommand() == CommandManager.GENERATE_WITHDRAWAL_BREAKDOWN) {
+            executeCommand(command);
         } else if (command.getCommand() == CommandManager.CLOSE_STATEMENT) {
+            executeCommand(command);
+        } else if (command.getCommand() == CommandManager.PRINT_DOCUMENT) {
+            executeCommand(command);
+        } else if (command.getCommand() == CommandManager.COPY_ORDER) {
             executeCommand(command);
         } else {
         	FDialog.info(pos.getWindowNo(), popupMenu, "DocProcessed", pos.getDocumentNo());
@@ -124,8 +125,7 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
     	
     }
 
-    private void executeCommand(Command command)
-    {
+    public void executeCommand(Command command) {
         BusyDialog waiting = new BusyDialog();
         try {
             CommandReceiver receiver = commandManager.getCommandReceivers(command.getEvent());
@@ -134,13 +134,13 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
                     && pos.isCompleted()
                     && !pos.isVoided()) {
                 receiver.setCtx(pos.getCtx());
-                receiver.setPartnerId(queryPartner.getRecord_ID());
+                receiver.setPartnerId(pos.getC_BPartner_ID());
                 receiver.setOrderId(pos.getC_Order_ID());
                 receiver.setPOSId(pos.getC_POS_ID());
                 receiver.setBankAccountId(pos.getC_BankAccount_ID());
                 MBPartner partner = MBPartner.get(pos.getCtx(), receiver.getPartnerId());
                 Optional<String> taxId = Optional.ofNullable(partner.getTaxID());
-                String processMessage = receiver.getName()
+                String processMessage = "@" + receiver.getName() + "@"
                         + " @DisplayDocumentInfo@ : " + pos.getDocumentNo()
                         + " @To@ @C_BPartner_ID@ : " + partner.getName()
                         + " @TaxID@ : " + taxId.orElseGet(() -> "");
@@ -155,11 +155,13 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
                     } else {
                         afterExecutionCommand(command);
                         showOkMessage(processInfo);
-                        if(processInfo != null)
-                        	pos.setOrder(processInfo.getRecord_ID());
-                        pos.refreshHeader();
-                        //	Print Ticket
-                        pos.printTicket();
+                        if (processInfo != null 
+                        		&& processInfo.getRecord_ID() > 0) {
+                            pos.setOrder(processInfo.getRecord_ID());
+                            pos.refreshHeader();
+                            //	Print Ticket
+                            pos.printTicket();
+                        }
                     }
                 }
             }
@@ -186,13 +188,17 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
                     waiting.dispose();
                     if (processInfo != null && processInfo.isError()) {
                         showError(processInfo);
-                    }
-                    else
-                    {
+                    } else {
                         afterExecutionCommand(command);
+                        if (processInfo != null 
+                        		&& processInfo.getRecord_ID() > 0) {
+                            pos.setOrder(processInfo.getRecord_ID());
+                            pos.refreshHeader();
+                            //	Print Ticket
+                            pos.printTicket();
+                        }
                         showOkMessage(processInfo);
                     }
-                    pos.printTicket();
                 }
             }
             //Return product
@@ -239,6 +245,15 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
                 ff.setAttribute(org.adempiere.webui.component.Window.INSERT_POSITION_KEY, org.adempiere.webui.component.Window.INSERT_NEXT);
                 ff.setTitle(browse.getTitle());
                 SessionManager.getAppDesktop().showWindow(ff);
+            } else if (command.getCommand() == CommandManager.GENERATE_WITHDRAWAL_BREAKDOWN) {
+                Env.setContext(pos.getCtx(), pos.getWindowNo(), "C_POS_ID", pos.getC_POS_ID());
+                MBrowse browse = new MBrowse(Env.getCtx(), 50238, null);
+                WBrowser browser = new WBrowser(true, pos.getWindowNo(), "", browse, "", true, "", true);
+                CustomForm ff = browser.getForm();
+                ff.setAttribute(org.adempiere.webui.component.Window.MODE_KEY, org.adempiere.webui.component.Window.MODE_EMBEDDED);
+                ff.setAttribute(org.adempiere.webui.component.Window.INSERT_POSITION_KEY, org.adempiere.webui.component.Window.INSERT_NEXT);
+                ff.setTitle(browse.getTitle());
+                SessionManager.getAppDesktop().showWindow(ff);
             } else if (command.getCommand() == CommandManager.CLOSE_STATEMENT) {
                 Env.setContext(pos.getCtx(), pos.getWindowNo(), "C_POS_ID", pos.getC_POS_ID());
                 MBrowse browse = new MBrowse(Env.getCtx(), 50057, null);
@@ -259,17 +274,38 @@ public class WPOSActionMenu implements  POSQueryListener, EventListener{
                 command.execute(receiver);
                 ProcessInfo processInfo = receiver.getProcessInfo();
                 waiting.dispose();
-                if (processInfo != null && processInfo.isError()) {
+                if (processInfo!= null && processInfo.isError()) {
                     showError(processInfo);
-                }
-                else
-                {
+                } else {
                     afterExecutionCommand(command);
-                    if (processInfo != null)
-                        showOkMessage(processInfo);
-
-                    pos.refreshHeader();
+                    showOkMessage(processInfo);
+                    if (processInfo != null 
+                    		&& processInfo.getRecord_ID() > 0) {
+                        pos.setOrder(processInfo.getRecord_ID());
+                        pos.refreshHeader();
+                        //	Print Ticket
+                        pos.printTicket();
+                    }
                 }
+            } else if(command.getCommand() == CommandManager.PRINT_DOCUMENT
+                    && pos.getC_Order_ID() > 0
+                    && pos.isCompleted()
+                    && pos.isInvoiced()) {
+            	//	Print Ticket
+                pos.printTicket();
+            } else if(command.getCommand() == CommandManager.COPY_ORDER
+                    && pos.getC_Order_ID() > 0
+                    && pos.isCompleted()
+                    && pos.isInvoiced()) {
+            	//	Print Ticket
+            	MOrder from = new MOrder (pos.getCtx(), pos.getC_Order_ID(), null);
+        		MOrder newOrder = MOrder.copyFrom (from, from.getDateAcct(), 
+        				from.getC_DocTypeTarget_ID(), from.isSOTrx(), false, true, null);
+        		 pos.setOrder(newOrder.getC_Order_ID());
+                 pos.refreshHeader();
+        		boolean OK = newOrder.save();
+        		if (!OK)
+        			throw new IllegalStateException("Could not create new Order");
             }
         }
         catch (Exception exception)

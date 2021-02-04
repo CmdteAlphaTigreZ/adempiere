@@ -132,7 +132,7 @@ public class WPOSOrderLinePanel extends WPOSSubPanel implements WTableModelListe
 	 */
 	public void enableTable() {
 		posTable.setEnabled(true);
-		lineTableHandle.setEditable(posPanel.isModifyPrice(), posPanel.isDrafted());
+		//lineTableHandle.setEditable(posPanel.isModifyPrice(), posPanel.isDrafted());
 		posTable.addActionListener(this);
 		posTable.addEventListener(Events.ON_CLICK, this);
 	}
@@ -155,7 +155,7 @@ public class WPOSOrderLinePanel extends WPOSSubPanel implements WTableModelListe
 	}
 	
 	public void selectLine(){
-		lineTableHandle.setEditable(posPanel.isModifyPrice(), posPanel.isDrafted());
+		//lineTableHandle.setEditable(posPanel.isModifyPrice(), posPanel.isDrafted());
 		IDColumn key = (IDColumn) posTable.getModel().getValueAt(posTable.getSelectedRow(), 0);
 		orderLineId = key.getRecord_ID();
 		showProductInfo(posTable.getSelectedRow());

@@ -23,6 +23,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
@@ -378,7 +379,7 @@ public class POSActionPanel extends POSSubPanel
 				posPanel.updateProductPlaceholder(value);
 				try {
 					posPanel.setAddQty(true);
-					findProduct(true);
+					findProduct(true, productId, Env.ONE);
 				} catch (Exception exception) {
 					ADialog.error(0, null, exception.getLocalizedMessage());
 				}
@@ -400,8 +401,9 @@ public class POSActionPanel extends POSSubPanel
 
 	/**************************************************************************
 	 * 	Find/Set Product & Price
+	 * optional product id direct query
 	 */
-	public void findProduct(boolean editQty) throws Exception {
+	public void findProduct(boolean editQty, int productId, BigDecimal qty) throws Exception {
 		if (getProductTimer() != null)
 			getProductTimer().stop();
 		String query = fieldProductName.getPlaceholder();
@@ -415,18 +417,19 @@ public class POSActionPanel extends POSSubPanel
 			Integer.getInteger(query);
 		} catch (Exception e) {}
 		//	
-		List<Vector<Object>> results = CPOS.getQueryProduct(query, posPanel.getM_Warehouse_ID(), 
+		List<Vector<Object>> results = CPOS.getQueryProduct(productId, query, posPanel.getM_Warehouse_ID(), 
 				posPanel.getM_PriceList_ID(), posPanel.getC_BPartner_ID());
 		//	Set Result
 		if (results.size() == 1) {
 			Optional<Vector<Object>> columns = results.stream().findFirst();
 			if (columns.isPresent()) {
-				Integer productId = (Integer) columns.get().elementAt(0);
+				String productName = (String) columns.get().elementAt(2);
 				posPanel.setAddQty(true);
 				posPanel.addOrUpdateLine(productId, editQty? Env.ZERO: Env.ONE);
+				fieldProductName.setText(productName);
 			}
 		} else {	//	more than one
-			showWindowProduct(query);
+            showWindowProduct(query);
 		}
 		//	Change focus
 		posPanel.refreshPanel();

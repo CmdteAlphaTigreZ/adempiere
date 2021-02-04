@@ -466,16 +466,22 @@ public class WQueryBPartner extends WPOSQuery {
 				fieldPhone.setValue(m_Text);
 			fieldPhone.setFocus(true);
 		}
-		else if(e.getTarget().equals(fieldName.getComponent(WPOSTextField.PRIMARY))
+		else if(Events.ON_OK.equals(e.getName())
+				&& (e.getTarget().equals(fieldName.getComponent(WPOSTextField.PRIMARY))
 					|| e.getTarget().equals(fieldName2.getComponent(WPOSTextField.PRIMARY))
 					|| e.getTarget().equals(fieldContact.getComponent(WPOSTextField.PRIMARY))
 					|| e.getTarget().equals(fieldValue.getComponent(WPOSTextField.PRIMARY))
 					|| e.getTarget().equals(fieldTaxID.getComponent(WPOSTextField.PRIMARY))
 					|| e.getTarget().equals(fieldEmail.getComponent(WPOSTextField.PRIMARY))
 					|| e.getTarget().equals(fieldCity.getComponent(WPOSTextField.PRIMARY))
-					|| e.getTarget().equals(fieldPhone.getComponent(WPOSTextField.PRIMARY))) {
-			 	 refresh();
-				 isKeyboard = false;
+					|| e.getTarget().equals(fieldPhone.getComponent(WPOSTextField.PRIMARY))
+					&& (fieldName.getText().length() > 0 || fieldName2.getText().length() > 0 
+					|| fieldContact.getText().length() > 0 || fieldValue.getText().length() > 0
+				 	|| fieldTaxID.getText().length() > 0 || fieldEmail.getText().length() > 0
+				 	|| fieldCity.getText().length() > 0	|| fieldPhone.getText().length() > 0))) {
+			 	
+				refresh();
+				isKeyboard = false;
 		}
         else if (Events.ON_OK.equals(e.getName()) 
         		|| e.getTarget().equals(posTable) 
