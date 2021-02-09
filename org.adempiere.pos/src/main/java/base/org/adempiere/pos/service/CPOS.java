@@ -890,24 +890,28 @@ public class CPOS {
 					+ "WHERE ol.C_Order_ID = " + currentOrder.getC_Order_ID() + " "
 					+ "AND ol.M_Product_ID = M_ProductPrice.M_Product_ID)"));
 			//	Update Lines
-			MOrderLine[] lines = currentOrder.getLines();
-			//	Delete if not exist in price list
-			for (MOrderLine line : lines) {
-				//	Verify if exist
-				if(productPrices
+			Trx.run(transactionName -> {
+				currentOrder.set_TrxName(transactionName);
+				Arrays.asList(currentOrder.getLines(true, I_C_OrderLine.COLUMNNAME_M_Product_ID))
 					.stream()
-					.filter(productPrice -> productPrice.getM_Product_ID() == line.getM_Product_ID())
-					.findFirst()
-					.isPresent()) {
-					line.setC_BPartner_ID(partner.getC_BPartner_ID());
-					line.setC_BPartner_Location_ID(currentOrder.getC_BPartner_Location_ID());
-					line.setPrice();
-					line.setTax();
-					line.saveEx();
-				} else {
-					line.deleteEx(true);
-				}
-			}
+					.filter(orderLine -> orderLine.getC_OrderLine_ID() == orderLineId)
+					.forEach(orderLine -> {
+						if(productPrices
+								.stream()
+								.filter(productPrice -> productPrice.getM_Product_ID() == orderLine.getM_Product_ID())
+								.findFirst()
+								.isPresent()) {
+							orderLine.setC_BPartner_ID(partner.getC_BPartner_ID());
+							orderLine.setC_BPartner_Location_ID(currentOrder.getC_BPartner_Location_ID());
+							orderLine.setPrice();
+							orderLine.setTax();
+							orderLine.saveEx();
+						} else {
+							orderLine.deleteEx(true);
+						}
+				});
+				currentOrder.set_TrxName(null);
+			});
 		}
 	}
 
@@ -968,46 +972,49 @@ public class CPOS {
 		if(!isDrafted())
 			return null;
 		//	
-		MOrderLine[] orderLines = currentOrder.getLines("AND C_OrderLine_ID = " + orderLineId, "Line");
-		BigDecimal lineNetAmt = Env.ZERO;
-		BigDecimal taxRate = Env.ZERO;
-		BigDecimal grandTotal = Env.ZERO;
-		
-		//	Search Line
-		for(MOrderLine orderLine : orderLines) {
-			//	Valid No changes
-			if(qtyOrdered.compareTo(orderLine.getQtyOrdered()) == 0
-			&& priceEntered.compareTo(orderLine.getPriceEntered()) == 0
-			&& discountPercentage != null 
-			&& discountPercentage.compareTo(orderLine.getDiscount()) == 0 ) {
-				return null;
-			}
+		AtomicReference<BigDecimal> lineNetAmt = new AtomicReference<BigDecimal>(Env.ZERO);
+		AtomicReference<BigDecimal> taxRate = new AtomicReference<BigDecimal>(Env.ZERO);
+		AtomicReference<BigDecimal> grandTotal = new AtomicReference<BigDecimal>(Env.ZERO);
+		Trx.run(transactionName -> {
+			currentOrder.set_TrxName(transactionName);
+			MOrderLine[] orderLines = currentOrder.getLines("AND C_OrderLine_ID = " + orderLineId, "Line");
+			//	Search Line
+			for(MOrderLine orderLine : orderLines) {
+				//	Valid No changes
+				if(qtyOrdered.compareTo(orderLine.getQtyOrdered()) == 0
+				&& priceEntered.compareTo(orderLine.getPriceEntered()) == 0
+				&& discountPercentage != null 
+				&& discountPercentage.compareTo(orderLine.getDiscount()) == 0 ) {
+					continue;
+				}
+				BigDecimal price = priceEntered;
+				if (discountPercentage != null && discountPercentage.compareTo(orderLine.getDiscount()) != 0) {
+					BigDecimal discountAmount = orderLine.getPriceList().multiply(discountPercentage.divide(Env.ONEHUNDRED));
+					price = orderLine.getPriceList().subtract(discountAmount);
+				}
 
-			if (discountPercentage != null && discountPercentage.compareTo(orderLine.getDiscount()) != 0) {
-				BigDecimal discountAmount = orderLine.getPriceList().multiply(discountPercentage.divide(Env.ONEHUNDRED));
-				priceEntered = orderLine.getPriceList().subtract(discountAmount);
+				orderLine.setPrice(price);
+				orderLine.setQty(qtyOrdered);
+				orderLine.setTax();
+				orderLine.saveEx();
+				//	Set Values for Grand Total
+				lineNetAmt.set(orderLine.getLineNetAmt());
+				taxRate.set(MTax.get(ctx, orderLine.getC_Tax_ID()).getRate());
+				if(taxRate.get() == null) {
+					taxRate.set(Env.ZERO);
+				} else {
+					taxRate.set(taxRate.get()
+							.divide(Env.ONEHUNDRED));
+				}
+				//	Calculate Total
+				grandTotal.set(lineNetAmt.get()
+							.add(lineNetAmt.get()
+									.multiply(taxRate.get())));
 			}
-
-			orderLine.setPrice(priceEntered);
-			orderLine.setQty(qtyOrdered);
-			orderLine.setTax();
-			orderLine.saveEx();
-			//	Set Values for Grand Total
-			lineNetAmt = orderLine.getLineNetAmt();
-			taxRate = MTax.get(ctx, orderLine.getC_Tax_ID()).getRate();
-			if(taxRate == null) {
-				taxRate = Env.ZERO;
-			} else {
-				taxRate = taxRate
-						.divide(Env.ONEHUNDRED);
-			}
-			//	Calculate Total
-			grandTotal = lineNetAmt
-						.add(lineNetAmt
-								.multiply(taxRate));
-		}
+		});
+		currentOrder.set_TrxName(null);
 		//	Return Value
-		return new BigDecimal[]{lineNetAmt, taxRate, grandTotal};
+		return new BigDecimal[]{lineNetAmt.get(), taxRate.get(), grandTotal.get()};
 	}
 
 	/**
@@ -1176,12 +1183,19 @@ public class CPOS {
 	 * 
 	 */
 	public void deleteLine (int orderLineId) {
-		if ( orderLineId != -1 && currentOrder != null ) {
-			for ( MOrderLine line : currentOrder.getLines(true, I_C_OrderLine.COLUMNNAME_M_Product_ID) ) {
-				if ( line.getC_OrderLine_ID() == orderLineId ) {
-					line.deleteEx(true);	
-				}
-			}
+		if (orderLineId != -1 && currentOrder != null) {
+			//	Add line
+			Trx.run(transactionName -> {
+				currentOrder.set_TrxName(transactionName);
+				Arrays.asList(currentOrder.getLines(true, I_C_OrderLine.COLUMNNAME_M_Product_ID))
+					.stream()
+					.filter(orderLine -> orderLine.getC_OrderLine_ID() == orderLineId)
+					.findFirst()
+					.ifPresent(orderLine ->{
+						orderLine.deleteEx(true);
+				});
+			});
+			currentOrder.set_TrxName(null);
 		}
 	} //	deleteLine
 
