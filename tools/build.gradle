@@ -1,0 +1,117 @@
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+
+version = System.properties['project.version']
+description = 'This buildfile is used to build the base subproject within the Adempiere project.'
+repositories {
+    mavenLocal()
+    mavenCentral()
+    flatDir {
+       dirs 'dependences', 'lib'
+	}
+	maven {
+		url = "https://maven.pkg.github.com/erpcya/Repository"
+        credentials {
+        	username = System.properties['deploy.user'] ?: System.getenv("GITHUB_DEPLOY_USER")
+            password = System.properties['deploy.token'] ?: System.getenv("GITHUB_DEPLOY_TOKEN")
+		}
+	}
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def libraryVersion = '1.0.0'
+def entityType = 'ECAX'
+dependencies {
+	implementation fileTree(dir: 'dependences', include: ['*.jar'])
+	//api '<library-group>:<library-name>:<library-version>'
+}
+
+sourceSets {
+    main {
+         java {
+            srcDirs = ['src']
+         }
+    }
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": "Adempiere Base Module",
+                   "Implementation-Version": libraryVersion, 
+                   "EntityType": entityType)
+    }
+}
+
+//	Create release for project
+//task createRelease(type: Copy) {
+//   dependsOn build
+//   from file("$buildDir/distributions/")
+//   into file("$buildDir/release/")
+//   //destinationDir(file('build/release/'))
+//   doLast {
+//        file('build/release/')
+//        	.listFiles({file -> file.isFile()} as FileFilter).sort()
+//        	.each { File file ->
+//            ant.checksum file: file
+//        }
+//   	}
+//}
+
+//	Create release for project
+task createRelease(type: Zip) {
+   dependsOn build
+   from 'build/libs/'
+   from 'xml/'
+   include '*'
+   include '*/*'
+   archiveName project.name + '.zip'
+   destinationDir(file('build/release/'))
+   doLast {
+        file('build/release/')
+        	.listFiles({file -> file.isFile()} as FileFilter).sort()
+        	.each { File file ->
+            ant.checksum file: file
+        }
+   	}
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "https://maven.pkg.github.com/erpcya/Repository"
+            credentials {
+                username = System.properties['deploy.user'] ?: System.getenv("GITHUB_DEPLOY_USER")
+                password = System.properties['deploy.token'] ?: System.getenv("GITHUB_DEPLOY_TOKEN")
+            }
+        }
+    }
+    publications {
+		mavenJava(MavenPublication) {
+        	groupId 'org.adempiere.core'
+            artifactId 'tools'
+            version libraryVersion
+           	from components.java
+           	pom {
+                name = 'Base'
+                description = 'ADempiere base library'
+                url = 'https://www.erpya.com/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}
