@@ -19,6 +19,8 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.4.7'
     api 'io.github.adempiere:base:3.9.4-develop-1.0'
 }
 
@@ -44,7 +46,7 @@ version = "3.9.4-develop-1.0"
 
 jar {
     manifest {
-        attributes("Implementation-Title": "Adempiere Project Management",
+        attributes("Implementation-Title": "Adempiere Request Management",
                    "Implementation-Version": version, 
                    "EntityType": entityType)
     }
@@ -63,12 +65,12 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
         	groupId 'io.github.adempiere'
-            artifactId 'project'
+            artifactId 'request'
             version
            	from components.java
            	pom {
-                name = 'Project'
-                description = 'Project Management dedicated to manage project, and members.'
+                name = 'Request'
+                description = 'Request Management, used to CRM request.'
                 url = 'http://adempiere.io/'
                 licenses {
                     license {
