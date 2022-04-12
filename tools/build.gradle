@@ -42,8 +42,8 @@ publishing {
         maven {
             url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             credentials {
-                username = ossrhUsername ?: System.getenv("GITHUB_DEPLOY_USER")
-                password = ossrhPassword ?: System.getenv("GITHUB_DEPLOY_TOKEN")
+                username = ossrhUsername ?: System.getenv("OSSRH_USER_NAME")
+                password = ossrhPassword ?: System.getenv("OSSRH_PASSWORD")
             }
         }
     }
