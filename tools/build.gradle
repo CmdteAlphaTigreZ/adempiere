@@ -1,31 +1,11 @@
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
-
-
-version = System.properties['project.version']
-description = 'This buildfile is used to build the base subproject within the Adempiere project.'
-repositories {
-    mavenLocal()
-    mavenCentral()
-    flatDir {
-       dirs 'dependences', 'lib'
-	}
-	maven {
-		url = "https://maven.pkg.github.com/erpcya/Repository"
-        credentials {
-        	username = System.properties['deploy.user'] ?: System.getenv("GITHUB_DEPLOY_USER")
-            password = System.properties['deploy.token'] ?: System.getenv("GITHUB_DEPLOY_TOKEN")
-		}
-	}
-}
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def libraryVersion = '1.0.0'
-def entityType = 'ECAX'
 dependencies {
-	implementation fileTree(dir: 'dependences', include: ['*.jar'])
 	//api '<library-group>:<library-name>:<library-version>'
 }
 
@@ -37,71 +17,50 @@ sourceSets {
     }
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+signing {
+    sign configurations.archives
+}
+
+def entityType = 'D'
+version = "3.9.4-develop-1.0"
+
 jar {
     manifest {
         attributes("Implementation-Title": "Adempiere Base Module",
-                   "Implementation-Version": libraryVersion, 
+                   "Implementation-Version": version, 
                    "EntityType": entityType)
     }
-}
-
-//	Create release for project
-//task createRelease(type: Copy) {
-//   dependsOn build
-//   from file("$buildDir/distributions/")
-//   into file("$buildDir/release/")
-//   //destinationDir(file('build/release/'))
-//   doLast {
-//        file('build/release/')
-//        	.listFiles({file -> file.isFile()} as FileFilter).sort()
-//        	.each { File file ->
-//            ant.checksum file: file
-//        }
-//   	}
-//}
-
-//	Create release for project
-task createRelease(type: Zip) {
-   dependsOn build
-   from 'build/libs/'
-   from 'xml/'
-   include '*'
-   include '*/*'
-   archiveName project.name + '.zip'
-   destinationDir(file('build/release/'))
-   doLast {
-        file('build/release/')
-        	.listFiles({file -> file.isFile()} as FileFilter).sort()
-        	.each { File file ->
-            ant.checksum file: file
-        }
-   	}
 }
 
 publishing {
     repositories {
         maven {
-            url = "https://maven.pkg.github.com/erpcya/Repository"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             credentials {
-                username = System.properties['deploy.user'] ?: System.getenv("GITHUB_DEPLOY_USER")
-                password = System.properties['deploy.token'] ?: System.getenv("GITHUB_DEPLOY_TOKEN")
+                username = ossrhUsername ?: System.getenv("GITHUB_DEPLOY_USER")
+                password = ossrhPassword ?: System.getenv("GITHUB_DEPLOY_TOKEN")
             }
         }
     }
     publications {
-		mavenJava(MavenPublication) {
-        	groupId 'org.adempiere.core'
+        mavenJava(MavenPublication) {
+        	groupId 'io.github.adempiere'
             artifactId 'tools'
-            version libraryVersion
+            version
            	from components.java
            	pom {
-                name = 'Base'
-                description = 'ADempiere base library'
-                url = 'https://www.erpya.com/'
+                name = 'Tools'
+                description = 'A tool used for all ADempiere project ans first base library.'
+                url = 'http://adempiere.io/'
                 licenses {
                     license {
-                        name = 'GNU General Public License v3.0'
-                        url = 'https://www.gnu.org/licenses/gpl-3.0.txt'
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
                     }
                 }
                 developers {
@@ -111,7 +70,16 @@ publishing {
                         email = 'ysenih@erpya.com'
                     }
                 }
+                scm {
+                    connection = 'scm:git:git://github.com/adempiere/adempiere.git'
+                    developerConnection = 'scm:git:ssh://github.com/adempiere/adempiere.git'
+                    url = 'http://github.com/adempiere/adempiere'
+                }
             }
 		}
 	}
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
