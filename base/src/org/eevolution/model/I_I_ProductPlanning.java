@@ -275,8 +275,6 @@ public interface I_I_ProductPlanning
 	  */
 	public int getM_Forecast_ID();
 
-	public org.compiere.model.I_M_Forecast getM_Forecast() throws RuntimeException;
-
     /** Column name M_ForecastLine_ID */
     public static final String COLUMNNAME_M_ForecastLine_ID = "M_ForecastLine_ID";
 
@@ -289,9 +287,6 @@ public interface I_I_ProductPlanning
 	  * Forecast Line
 	  */
 	public int getM_ForecastLine_ID();
-
-	public org.compiere.model.I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
-
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -467,8 +462,6 @@ public interface I_I_ProductPlanning
 	  */
 	public int getPP_Product_BOM_ID();
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
-
     /** Column name PP_Product_Planning_ID */
     public static final String COLUMNNAME_PP_Product_Planning_ID = "PP_Product_Planning_ID";
 
@@ -481,8 +474,6 @@ public interface I_I_ProductPlanning
 	  * Product Planning
 	  */
 	public int getPP_Product_Planning_ID();
-
-	public org.eevolution.model.I_PP_Product_Planning getPP_Product_Planning() throws RuntimeException;
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

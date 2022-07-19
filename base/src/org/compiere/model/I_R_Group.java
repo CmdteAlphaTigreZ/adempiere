@@ -173,8 +173,6 @@ public interface I_R_Group
 	  */
 	public int getPP_Product_BOM_ID();
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
-
     /** Column name R_Group_ID */
     public static final String COLUMNNAME_R_Group_ID = "R_Group_ID";
 

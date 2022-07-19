@@ -26,6 +26,7 @@ import java.util.Properties;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.engine.IDocumentLine;
 import org.compiere.util.Env;
+import org.compiere.util.RefactoryUtil;
 
 /**
  * 	Material Transaction Model
@@ -250,8 +251,12 @@ public class MTransaction extends X_M_Transaction
 		return (IDocumentLine) getM_MovementLine();
 	    if(getM_ProductionLine_ID() > 0)
 		return (IDocumentLine) getM_ProductionLine();
-	    if(getPP_Cost_Collector_ID() > 0)
-		return (IDocumentLine) getPP_Cost_Collector();
+	    if(getPP_Cost_Collector_ID() > 0) {
+	    	PO costCollector = RefactoryUtil.getCostCollector(getCtx(), getPP_Cost_Collector_ID(), get_TrxName());
+			if(costCollector != null) {
+				return (IDocumentLine) costCollector;
+			}
+	    }
 		if(getC_ProjectIssue_ID() > 0)
 		return (IDocumentLine) getC_ProjectIssue();
 	    
@@ -295,8 +300,12 @@ public class MTransaction extends X_M_Transaction
 			return getM_ProductionLine().getM_Production().getMovementDate();
 		if (getC_ProjectIssue_ID() !=0)
 			return getC_ProjectIssue().getMovementDate();
-		if (getPP_Cost_Collector_ID() !=0)
-			return getPP_Cost_Collector().getDateAcct();
+		if (getPP_Cost_Collector_ID() !=0) {
+			PO costCollector = RefactoryUtil.getCostCollector(getCtx(), getPP_Cost_Collector_ID(), get_TrxName());
+			if(costCollector != null) {
+				return (Timestamp) costCollector.get_Value("DateAcct");
+			}
+		}
 		return null;
 	}
 	

@@ -218,8 +218,6 @@ public interface I_I_SalesHistory
 	  */
 	public int getC_SalesHistory_ID();
 
-	public org.eevolution.model.I_C_SalesHistory getC_SalesHistory() throws RuntimeException;
-
     /** Column name C_SalesRegion_ID */
     public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
 

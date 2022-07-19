@@ -59,8 +59,8 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
-import org.eevolution.model.MPPProductBOM;
-import org.eevolution.model.MPPProductBOMLine;
+import org.eevolution.manufacturing.model.MPPProductBOM;
+import org.eevolution.manufacturing.model.MPPProductBOMLine;
 
 /**
  * CalculateReplenishPlan.Java

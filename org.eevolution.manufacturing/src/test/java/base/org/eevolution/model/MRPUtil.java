@@ -27,6 +27,10 @@ import org.compiere.model.MWarehouse;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.eevolution.manufacturing.model.I_PP_MRP;
+import org.eevolution.manufacturing.model.I_PP_Product_Planning;
+import org.eevolution.manufacturing.model.MPPMRP;
+import org.eevolution.manufacturing.model.MPPProductPlanning;
 
 /**
  * Many helper methods for producing different entities

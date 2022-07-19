@@ -338,11 +338,6 @@ public class X_I_SalesHistory extends PO implements I_I_SalesHistory, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.eevolution.model.I_C_SalesHistory getC_SalesHistory() throws RuntimeException
-    {
-		return (org.eevolution.model.I_C_SalesHistory)MTable.get(getCtx(), org.eevolution.model.I_C_SalesHistory.Table_Name)
-			.getPO(getC_SalesHistory_ID(), get_TrxName());	}
-
 	/** Set Sales History.
 		@param C_SalesHistory_ID 
 		Sales History for statistics and forecast

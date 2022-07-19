@@ -46,8 +46,8 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.eevolution.model.MPPProductBOM;
-import org.eevolution.model.MPPProductBOMLine;
+import org.eevolution.manufacturing.model.MPPProductBOM;
+import org.eevolution.manufacturing.model.MPPProductBOMLine;
 
 
 /**

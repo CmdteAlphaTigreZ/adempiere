@@ -84,11 +84,11 @@ import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 import org.compiere.util.Language;
 import org.compiere.util.Msg;
-import org.eevolution.model.MPPMRP;
-import org.eevolution.model.MPPOrder;
-import org.eevolution.model.MPPProductPlanning;
-import org.eevolution.model.X_PP_MRP;
-import org.eevolution.model.X_PP_Product_Planning;
+import org.eevolution.manufacturing.model.MPPMRP;
+import org.eevolution.manufacturing.model.MPPOrder;
+import org.eevolution.manufacturing.model.MPPProductPlanning;
+import org.eevolution.manufacturing.model.X_PP_MRP;
+import org.eevolution.manufacturing.model.X_PP_Product_Planning;
 
 /**
  * VMRPDetailed

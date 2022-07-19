@@ -586,11 +586,6 @@ public class X_DD_Freight extends PO implements I_DD_Freight, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Order)MTable.get(getCtx(), org.eevolution.model.I_PP_Order.Table_Name)
-			.getPO(getPP_Order_ID(), get_TrxName());	}
-
 	/** Set Manufacturing Order.
 		@param PP_Order_ID 
 		Manufacturing Order

@@ -17,7 +17,7 @@
 package org.compiere.model;
 
 import org.compiere.util.Msg;
-import org.eevolution.model.MPPProductBOM;
+import org.eevolution.manufacturing.model.MPPProductBOM;
 
 import java.sql.ResultSet;
 import java.util.Properties;

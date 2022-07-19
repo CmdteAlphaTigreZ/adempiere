@@ -565,8 +565,6 @@ public interface I_HR_Movement
 	/** Get Manufacturing Cost Collector	  */
 	public int getPP_Cost_Collector_ID();
 
-	public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException;
-
     /** Column name PeriodNo */
     public static final String COLUMNNAME_PeriodNo = "PeriodNo";
 

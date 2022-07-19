@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import org.compiere.model.I_AD_WF_Node;
 import org.compiere.model.I_AD_Workflow;
 import org.compiere.model.I_S_Resource;
+import org.eevolution.manufacturing.model.I_PP_Cost_Collector;
+import org.eevolution.manufacturing.model.I_PP_Order_Node;
 
 /**
  * Rounting(Workflow Service)

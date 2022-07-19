@@ -39,8 +39,8 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
-import org.eevolution.model.MPPProductBOM;
-import org.eevolution.model.MPPProductBOMLine;
+import org.eevolution.manufacturing.model.MPPProductBOM;
+import org.eevolution.manufacturing.model.MPPProductBOMLine;
 import org.eevolution.service.dsl.ProcessBuilder;
 
 /**

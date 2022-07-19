@@ -395,8 +395,6 @@ public interface I_I_Product_BOM
 	  */
 	public int getPP_Product_BOMLine_ID();
 
-	public org.eevolution.model.I_PP_Product_BOMLine getPP_Product_BOMLine() throws RuntimeException;
-
     /** Column name PP_Product_BOM_ID */
     public static final String COLUMNNAME_PP_Product_BOM_ID = "PP_Product_BOM_ID";
 
@@ -409,8 +407,6 @@ public interface I_I_Product_BOM
 	  * BOM & Formula
 	  */
 	public int getPP_Product_BOM_ID();
-
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

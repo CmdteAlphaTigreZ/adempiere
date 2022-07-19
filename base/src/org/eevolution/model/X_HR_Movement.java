@@ -959,11 +959,6 @@ public class X_HR_Movement extends PO implements I_HR_Movement, I_Persistent
 		return false;
 	}
 
-	public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Cost_Collector)MTable.get(getCtx(), org.eevolution.model.I_PP_Cost_Collector.Table_Name)
-			.getPO(getPP_Cost_Collector_ID(), get_TrxName());	}
-
 	/** Set Manufacturing Cost Collector.
 		@param PP_Cost_Collector_ID Manufacturing Cost Collector	  */
 	public void setPP_Cost_Collector_ID (int PP_Cost_Collector_ID)

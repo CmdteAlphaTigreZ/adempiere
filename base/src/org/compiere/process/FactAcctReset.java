@@ -54,8 +54,6 @@ import org.compiere.util.RefactoryUtil;
 import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
 import org.eevolution.model.X_HR_Process;
-import org.eevolution.model.X_PP_Cost_Collector;
-import org.eevolution.model.X_PP_Order;
 
 /**
  * Accounting Fact Reset
@@ -330,17 +328,17 @@ public class FactAcctReset extends FactAcctResetAbstract {
             docBaseType = "= '" + MPeriodControl.DOCBASETYPE_MatchInvoice + "'";
         else if (tableId == MMatchPO.Table_ID)
             docBaseType = "= '" + MPeriodControl.DOCBASETYPE_MatchPO + "'";
-        else if (tableId == X_PP_Order.Table_ID)
+        else if (tableId == RefactoryUtil.PP_Order_Table_ID)
             docBaseType = "IN ('" + MPeriodControl.DOCBASETYPE_ManufacturingOrder
                     + "','" + MPeriodControl.DOCBASETYPE_MaintenanceOrder
                     + "','" + MPeriodControl.DOCBASETYPE_QualityOrder + "')";
-        else if (tableId == X_PP_Cost_Collector.Table_ID)
+        else if (tableId == RefactoryUtil.PP_Cost_Collector_Table_ID)
             docBaseType = "IN ('" + MPeriodControl.DOCBASETYPE_ManufacturingCostCollector + "')";
         else if (tableId == RefactoryUtil.DD_Order_Table_ID)
             docBaseType = "= '" + MPeriodControl.DOCBASETYPE_DistributionOrder + "'";
         else if (tableId == X_HR_Process.Table_ID)
             docBaseType = "= '" + MPeriodControl.DOCBASETYPE_Payroll + "'";
-        else if (tableId == X_PP_Cost_Collector.Table_ID)
+        else if (tableId == RefactoryUtil.PP_Cost_Collector_Table_ID)
             docBaseType = "= '" + MPeriodControl.DOCBASETYPE_ManufacturingCostCollector + "'";
         else if (tableId == RefactoryUtil.A_Asset_Addition_Table_ID)
             docBaseType = "= '" + MPeriodControl.DOCBASETYPE_FixedAssetsAddition + "'";

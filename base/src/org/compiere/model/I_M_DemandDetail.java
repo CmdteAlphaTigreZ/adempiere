@@ -147,8 +147,6 @@ public interface I_M_DemandDetail
 	  */
 	public int getM_ForecastLine_ID();
 
-	public org.compiere.model.I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
-
     /** Column name M_RequisitionLine_ID */
     public static final String COLUMNNAME_M_RequisitionLine_ID = "M_RequisitionLine_ID";
 

@@ -24,6 +24,7 @@ import java.util.Collection;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.test.CommonGWSetup;
+import org.eevolution.manufacturing.model.I_PP_MRP;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 

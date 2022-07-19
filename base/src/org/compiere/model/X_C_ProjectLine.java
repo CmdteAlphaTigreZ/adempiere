@@ -571,11 +571,6 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Order)MTable.get(getCtx(), org.eevolution.model.I_PP_Order.Table_Name)
-			.getPO(getPP_Order_ID(), get_TrxName());	}
-
 	/** Set Manufacturing Order.
 		@param PP_Order_ID 
 		Manufacturing Order
@@ -598,11 +593,6 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
-
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_BOM)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-			.getPO(getPP_Product_BOM_ID(), get_TrxName());	}
 
 	/** Set BOM & Formula.
 		@param PP_Product_BOM_ID 
