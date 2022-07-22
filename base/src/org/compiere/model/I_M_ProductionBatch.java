@@ -304,8 +304,6 @@ public interface I_M_ProductionBatch
 	  */
 	public int getPP_Product_BOM_ID();
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
-
     /** Column name Posted */
     public static final String COLUMNNAME_Posted = "Posted";
 

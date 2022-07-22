@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.compiere.model.MReplenishPlan;
+//import org.compiere.model.MReplenishPlan;
 import org.compiere.model.MTable;
 import org.compiere.model.X_AD_PrintFormatItem;
 import org.compiere.print.MPrintFormat;
@@ -57,21 +57,21 @@ public class GenerateReplenishPlanReport extends GenerateReplenishPlanReportAbst
 
 	@Override
 	protected String doIt() {
-		MReplenishPlan run = new MReplenishPlan(getCtx(), getRecord_ID(), get_TrxName());
-		dateFrom = run.getDateStart();
-		dateTo = run.getDateFinish();
-
-		if (dateFrom == null)
-			throw new IllegalArgumentException(Msg.parseTranslation(getCtx(), "@FillMandatory@ @DateStart@"));
-		if (dateTo == null)
-			throw new IllegalArgumentException(Msg.parseTranslation(getCtx(), "@FillMandatory@ @DateFinish@"));
-		//	
-		addWeekDateInfo();
-
-		if (Ini.isClient())
-			getProcessInfo().setTransientObject(getPrintFormat());
-		else
-			getProcessInfo().setSerializableObject(getPrintFormat());
+//		MReplenishPlan run = new MReplenishPlan(getCtx(), getRecord_ID(), get_TrxName());
+//		dateFrom = run.getDateStart();
+//		dateTo = run.getDateFinish();
+//
+//		if (dateFrom == null)
+//			throw new IllegalArgumentException(Msg.parseTranslation(getCtx(), "@FillMandatory@ @DateStart@"));
+//		if (dateTo == null)
+//			throw new IllegalArgumentException(Msg.parseTranslation(getCtx(), "@FillMandatory@ @DateFinish@"));
+//		//	
+//		addWeekDateInfo();
+//
+//		if (Ini.isClient())
+//			getProcessInfo().setTransientObject(getPrintFormat());
+//		else
+//			getProcessInfo().setSerializableObject(getPrintFormat());
 		return null;
 	}
 

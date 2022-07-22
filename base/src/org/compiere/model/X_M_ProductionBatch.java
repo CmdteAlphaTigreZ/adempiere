@@ -491,11 +491,6 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 		return (Timestamp)get_Value(COLUMNNAME_MovementDate);
 	}
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_BOM)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-			.getPO(getPP_Product_BOM_ID(), get_TrxName());	}
-
 	/** Set BOM & Formula.
 		@param PP_Product_BOM_ID 
 		BOM & Formula

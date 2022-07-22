@@ -732,8 +732,6 @@ public interface I_R_Request
 	/** Get Manufacturing Cost Collector	  */
 	public int getPP_Cost_Collector_ID();
 
-	public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException;
-
     /** Column name PP_Order_ID */
     public static final String COLUMNNAME_PP_Order_ID = "PP_Order_ID";
 
@@ -746,8 +744,6 @@ public interface I_R_Request
 	  * Manufacturing Order
 	  */
 	public int getPP_Order_ID();
-
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException;
 
     /** Column name Priority */
     public static final String COLUMNNAME_Priority = "Priority";

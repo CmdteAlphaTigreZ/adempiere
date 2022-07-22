@@ -932,11 +932,6 @@ public class X_WM_InOutBoundLine extends PO implements I_WM_InOutBoundLine, I_Pe
 		return bd;
 	}
 
-	public org.eevolution.model.I_PP_MRP getPP_MRP() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_MRP)MTable.get(getCtx(), org.eevolution.model.I_PP_MRP.Table_Name)
-			.getPO(getPP_MRP_ID(), get_TrxName());	}
-
 	/** Set Material Requirement Planning.
 		@param PP_MRP_ID 
 		MRP ID
@@ -960,11 +955,6 @@ public class X_WM_InOutBoundLine extends PO implements I_WM_InOutBoundLine, I_Pe
 		return ii.intValue();
 	}
 
-	public org.eevolution.model.I_PP_Order_BOMLine getPP_Order_BOMLine() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Order_BOMLine)MTable.get(getCtx(), org.eevolution.model.I_PP_Order_BOMLine.Table_Name)
-			.getPO(getPP_Order_BOMLine_ID(), get_TrxName());	}
-
 	/** Set Manufacturing Order BOM Line.
 		@param PP_Order_BOMLine_ID Manufacturing Order BOM Line	  */
 	public void setPP_Order_BOMLine_ID (int PP_Order_BOMLine_ID)
@@ -984,11 +974,6 @@ public class X_WM_InOutBoundLine extends PO implements I_WM_InOutBoundLine, I_Pe
 			 return 0;
 		return ii.intValue();
 	}
-
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Order)MTable.get(getCtx(), org.eevolution.model.I_PP_Order.Table_Name)
-			.getPO(getPP_Order_ID(), get_TrxName());	}
 
 	/** Set Manufacturing Order.
 		@param PP_Order_ID 

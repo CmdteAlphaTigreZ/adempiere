@@ -361,11 +361,6 @@ public class X_I_ProductPlanning extends PO implements I_I_ProductPlanning, I_Pe
 		return false;
 	}
 
-	public org.compiere.model.I_M_Forecast getM_Forecast() throws RuntimeException
-    {
-		return (org.compiere.model.I_M_Forecast)MTable.get(getCtx(), org.compiere.model.I_M_Forecast.Table_Name)
-			.getPO(getM_Forecast_ID(), get_TrxName());	}
-
 	/** Set Forecast.
 		@param M_Forecast_ID 
 		Material Forecast
@@ -388,11 +383,6 @@ public class X_I_ProductPlanning extends PO implements I_I_ProductPlanning, I_Pe
 			 return 0;
 		return ii.intValue();
 	}
-
-	public org.compiere.model.I_M_ForecastLine getM_ForecastLine() throws RuntimeException
-    {
-		return (org.compiere.model.I_M_ForecastLine)MTable.get(getCtx(), org.compiere.model.I_M_ForecastLine.Table_Name)
-			.getPO(getM_ForecastLine_ID(), get_TrxName());	}
 
 	/** Set Forecast Line.
 		@param M_ForecastLine_ID 
@@ -678,11 +668,6 @@ public class X_I_ProductPlanning extends PO implements I_I_ProductPlanning, I_Pe
 		return (String)get_Value(COLUMNNAME_PlannerValue);
 	}
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_BOM)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-			.getPO(getPP_Product_BOM_ID(), get_TrxName());	}
-
 	/** Set BOM & Formula.
 		@param PP_Product_BOM_ID 
 		BOM & Formula
@@ -705,11 +690,6 @@ public class X_I_ProductPlanning extends PO implements I_I_ProductPlanning, I_Pe
 			 return 0;
 		return ii.intValue();
 	}
-
-	public org.eevolution.model.I_PP_Product_Planning getPP_Product_Planning() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_Planning)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_Planning.Table_Name)
-			.getPO(getPP_Product_Planning_ID(), get_TrxName());	}
 
 	/** Set Product Planning.
 		@param PP_Product_Planning_ID 

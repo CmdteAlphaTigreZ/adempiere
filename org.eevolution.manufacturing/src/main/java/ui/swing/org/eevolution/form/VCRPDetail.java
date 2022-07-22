@@ -57,9 +57,9 @@ import org.eevolution.form.action.PopupAction;
 import org.eevolution.form.action.ZoomMenuAction;
 import org.eevolution.form.crp.CRPDatasetFactory;
 import org.eevolution.form.crp.CRPModel;
-import org.eevolution.model.MPPOrderNode;
+import org.eevolution.manufacturing.model.MPPOrderNode;
 import org.eevolution.tools.swing.SwingTool;
-import org.eevolution.tools.worker.SingleWorker;
+import org.eevolution.manufacturing.worker.SingleWorker;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 

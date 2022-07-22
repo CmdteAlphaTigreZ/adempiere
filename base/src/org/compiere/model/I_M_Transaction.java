@@ -268,8 +268,6 @@ public interface I_M_Transaction
 	/** Get Manufacturing Cost Collector	  */
 	public int getPP_Cost_Collector_ID();
 
-	public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException;
-
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";
 

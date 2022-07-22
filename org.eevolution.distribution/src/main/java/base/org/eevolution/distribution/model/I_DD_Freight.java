@@ -352,8 +352,6 @@ public interface I_DD_Freight
 	  */
 	public int getPP_Order_ID();
 
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException;
-
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 

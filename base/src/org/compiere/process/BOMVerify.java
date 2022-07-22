@@ -18,11 +18,10 @@ package org.compiere.process;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.*;
 import org.compiere.model.*;
 import org.compiere.util.*;
-import org.eevolution.model.MPPProductBOMLine;
-
 /**
  * 	Validate BOM
  *	
@@ -37,9 +36,6 @@ public class BOMVerify extends SvrProcess
 	private int		p_M_Product_Category_ID = 0;
 	/** Re-Validate			*/
 	private boolean	p_IsReValidate = false;
-	
-	/**	Product				*/
-	private MProduct			m_product = null;
 	/**	List of Products	*/
 	private ArrayList<MProduct>	foundproducts = new ArrayList<MProduct>();
 	private ArrayList<MProduct> validproducts = new ArrayList<MProduct>();
@@ -160,56 +156,50 @@ public class BOMVerify extends SvrProcess
 		
 		
 		foundproducts.add(product);
-		//MProductBOM[] productsBOMs = MProductBOM.getBOMLines(product);
-		
-		MPPProductBOMLine[] productsBOMs = MPPProductBOMLine.getBOMLines(product);
-		boolean containsinvalid = false;
-		boolean invalid = false;
-		for (int i = 0; i < productsBOMs.length; i++)
-		{
-			MPPProductBOMLine productsBOM = productsBOMs[i];
-			MProduct pp = new MProduct(getCtx(), productsBOM.getM_Product_ID(), get_TrxName());
-			if (!pp.isBOM())
-				log.finer(pp.getName());
+		AtomicBoolean invalid = new AtomicBoolean(false);
+		AtomicBoolean containsinvalid = new AtomicBoolean(false);
+		RefactoryUtil.getBOMLines(product)
+		.stream()
+		.map(bomLine -> new MProduct(getCtx(), bomLine.get_ValueAsInt("M_Product_ID"), get_TrxName()))
+		.forEach(bomLineProduct -> {
+			if (!bomLineProduct.isBOM())
+				log.finer(product.getName());
 			else 
 			{
-				if (validproducts.contains(pp))
+				if (validproducts.contains(bomLineProduct))
 				{
 					//Do nothing, no need to recheck
 				}
-				if (invalidproducts.contains(pp))
+				if (invalidproducts.contains(bomLineProduct))
 				{
-					containsinvalid = true;
+					containsinvalid.set(true);
 				}
-				else if (foundproducts.contains(pp))
+				else if (foundproducts.contains(bomLineProduct))
 				{
-					invalid = true;
-					addLog(0, null, null, product.getValue() + " recursively contains " + pp.getValue());
+					invalid.set(true);
+					addLog(0, null, null, bomLineProduct.getValue() + " recursively contains " + bomLineProduct.getValue());
 				}
 				else
 				{
-					if (!validateProduct(pp))
+					if (!validateProduct(bomLineProduct))
 					{
-						containsinvalid = true;
+						containsinvalid.set(true);
 					}
 					
 				}
 			}
-
-			
-			
-		}
+		});
 		
 		checkedproducts.add(product);
 		foundproducts.remove(product);
-		if (invalid)
+		if (invalid.get())
 		{
 			invalidproducts.add(product);
 			product.setIsVerified(false);
 			product.save();
 			return false;
 		}
-		else if (containsinvalid)
+		else if (containsinvalid.get())
 		{
 			containinvalidproducts.add(product);
 			product.setIsVerified(false);

@@ -52,9 +52,9 @@ import org.eevolution.distribution.model.I_DD_Order;
 import org.eevolution.distribution.model.MDDOrder;
 import org.eevolution.distribution.model.MDDOrderLine;
 import org.eevolution.distribution.process.MovementGenerate;
-import org.eevolution.model.MPPCostCollector;
-import org.eevolution.model.MPPOrder;
-import org.eevolution.model.MPPOrderBOMLine;
+import org.eevolution.manufacturing.model.MPPCostCollector;
+import org.eevolution.manufacturing.model.MPPOrder;
+import org.eevolution.manufacturing.model.MPPOrderBOMLine;
 import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 import org.eevolution.service.dsl.ProcessBuilder;
@@ -147,7 +147,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
         // Generate Delivery Manufacturing Order
         if (outboundLine.getPP_Order_BOMLine_ID() > 0) {
-            MPPOrderBOMLine orderBOMLine = (MPPOrderBOMLine) outboundLine.getPP_Order_BOMLine();
+            MPPOrderBOMLine orderBOMLine = new MPPOrderBOMLine(outboundLine.getCtx(), outboundLine.getPP_Order_BOMLine_ID(), outboundLine.get_TableName());
             if (outboundLine.getPickedQty().subtract(orderBOMLine.getQtyDelivered()).signum() < 0 && !isIncludeNotAvailable())
                 return;
 

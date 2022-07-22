@@ -436,11 +436,6 @@ public class X_C_Phase extends PO implements I_C_Phase, I_Persistent
         return new KeyNamePair(get_ID(), getName());
     }
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_BOM)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-			.getPO(getPP_Product_BOM_ID(), get_TrxName());	}
-
 	/** Set BOM & Formula.
 		@param PP_Product_BOM_ID 
 		BOM & Formula

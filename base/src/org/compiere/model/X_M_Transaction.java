@@ -412,11 +412,6 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
 		return (String)get_Value(COLUMNNAME_MovementType);
 	}
 
-	public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Cost_Collector)MTable.get(getCtx(), org.eevolution.model.I_PP_Cost_Collector.Table_Name)
-			.getPO(getPP_Cost_Collector_ID(), get_TrxName());	}
-
 	/** Set Manufacturing Cost Collector.
 		@param PP_Cost_Collector_ID Manufacturing Cost Collector	  */
 	public void setPP_Cost_Collector_ID (int PP_Cost_Collector_ID)

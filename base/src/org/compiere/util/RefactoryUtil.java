@@ -25,8 +25,10 @@ import java.util.Properties;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MProduct;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
+import org.compiere.model.Query;
 
 /**
  * A util class for keep worked functionality
@@ -36,6 +38,85 @@ public class RefactoryUtil {
 	public static final int		DD_OrderLine_Table_ID = 53038;
 	public static final String	DD_Order_Table_Name = "DD_Order";
 	public static final String	DD_OrderLine_Table_Name = "DD_OrderLine";
+	public static final int		A_Asset_Addition_Table_ID = 53137;
+	public static final String	A_Asset_Addition_Table_Name = "A_Asset_Addition";
+	public static final int		A_Depreciation_Entry_Table_ID = 53121;
+	public static final String	A_Depreciation_Entry_Table_Name = "A_Depreciation_Entry";
+	public static final int		A_Asset_Disposed_Table_ID = 53127;
+	public static final String	A_Asset_Disposed_Table_Name = "A_Asset_Disposed";
+	public static final int		A_Asset_Table_ID = 539;
+	public static final String	A_Asset_Table_Name = "A_Asset";
+	public static final int		PP_Cost_Collector_Table_ID = 53035;
+	public static final String	PP_Cost_Collector_Table_Name = "PP_Cost_Collector";
+	public static final int		PP_Order_Table_ID = 53027;
+	public static final String	PP_Order_Table_Name = "PP_Order";
+	public static final int		PP_Order_BOMLine_Table_ID = 53025;
+	public static final String	PP_Order_BOMLine_Table_Name = "PP_Order_BOMLine";
+	public static final int		M_ForecastLine_Table_ID = 722;
+	public static final String	M_ForecastLine_Table_Name = "M_ForecastLine";
+	public static final int		PP_Product_BOMLine_Table_ID = 53019;
+	public static final String	PP_Product_BOMLine_Table_Name = "PP_Product_BOMLine";
+	/** Column name PP_Product_BOM_ID */
+    public static final String PP_Product_BOMLine_PP_Product_BOM_ID = "PP_Product_BOM_ID";
+	
+	/** CostCollectorType AD_Reference_ID=53287 */
+	public static final int COSTCOLLECTORTYPE_AD_Reference_ID=53287;
+	/** Material Receipt = 100 */
+	public static final String COSTCOLLECTORTYPE_MaterialReceipt = "100";
+	/** Component Issue = 110 */
+	public static final String COSTCOLLECTORTYPE_ComponentIssue = "110";
+	/** Usege Variance = 120 */
+	public static final String COSTCOLLECTORTYPE_UsegeVariance = "120";
+	/** Method Change Variance = 130 */
+	public static final String COSTCOLLECTORTYPE_MethodChangeVariance = "130";
+	/** Rate Variance = 140 */
+	public static final String COSTCOLLECTORTYPE_RateVariance = "140";
+	/** Mix Variance = 150 */
+	public static final String COSTCOLLECTORTYPE_MixVariance = "150";
+	/** Activity Control = 160 */
+	public static final String COSTCOLLECTORTYPE_ActivityControl = "160";
+	
+	/**
+	 * Get BOM Lines from product
+	 * @param product
+	 * @return
+	 */
+	public static List<PO> getBOMLines(MProduct product) {
+		final String whereClause = PP_Product_BOMLine_PP_Product_BOM_ID 
+				+ " IN ( SELECT PP_PRODUCT_BOM_ID FROM PP_PRODUCT_BOM WHERE M_PRODUCT_ID = " + product.getM_Product_ID() + ")";
+		return new Query(product.getCtx(), PP_Product_BOMLine_Table_Name, whereClause, null)
+					.setClient_ID()
+					.list();
+	}
+	
+	/**
+	 * Get BOMs for given product
+	 * @param product
+	 * @param isComponent
+	 * @return list of MProductBOM
+	 */
+	public static List<PO> getBOMs(MProduct product) {
+		StringBuffer whereClause = new StringBuffer();
+		whereClause.append(PP_Product_BOMLine_PP_Product_BOM_ID);
+		whereClause.append(" IN ( SELECT PP_Product_BOM_ID FROM PP_Product_BOM ");
+		whereClause.append(" WHERE M_Product_ID = " + product.get_ID() + " ) ");
+		
+		return new Query(product.getCtx(), PP_Product_BOMLine_Table_Name, whereClause.toString(), null)
+									.setOnlyActiveRecords(true)
+									.setOrderBy("Line")
+									.list();
+	}
+	
+	/**
+	 * Get a instance of Cost Collector
+	 * @param context
+	 * @param costCollectorId
+	 * @param transactionName
+	 * @return
+	 */
+	public static PO getCostCollector(Properties context, int costCollectorId, String transactionName) {
+		return MTable.get(context, PP_Cost_Collector_Table_ID).getPO(costCollectorId, transactionName);
+	}
 	
 	/**
 	 * Get a instance of Distribution Order

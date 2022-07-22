@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.I_C_Order;
-import org.compiere.model.I_M_Forecast;
+import org.eevolution.manufacturing.model.I_M_Forecast;
 import org.compiere.model.I_M_Requisition;
 import org.compiere.model.MProduct;
 import org.compiere.model.MQuery;
@@ -32,11 +32,11 @@ import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.eevolution.distribution.model.I_DD_Order;
-import org.eevolution.model.I_PP_Order;
+import org.eevolution.manufacturing.model.I_PP_Order;
 import org.eevolution.distribution.model.MDDOrder;
-import org.eevolution.model.MPPMRP;
-import org.eevolution.model.MPPOrder;
-import org.eevolution.model.X_PP_MRP;
+import org.eevolution.manufacturing.model.MPPMRP;
+import org.eevolution.manufacturing.model.MPPOrder;
+import org.eevolution.manufacturing.model.X_PP_MRP;
 
 /**
  * Business Logic to show the MRP Info

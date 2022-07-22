@@ -625,8 +625,6 @@ public interface I_C_ProjectPhase
 	  */
 	public int getPP_Order_ID();
 
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException;
-
     /** Column name PP_Product_BOM_ID */
     public static final String COLUMNNAME_PP_Product_BOM_ID = "PP_Product_BOM_ID";
 
@@ -639,8 +637,6 @@ public interface I_C_ProjectPhase
 	  * BOM & Formula
 	  */
 	public int getPP_Product_BOM_ID();
-
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
 
     /** Column name PercentageCompleted */
     public static final String COLUMNNAME_PercentageCompleted = "PercentageCompleted";

@@ -1226,11 +1226,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return (String)get_Value(COLUMNNAME_NextAction);
 	}
 
-	public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Cost_Collector)MTable.get(getCtx(), org.eevolution.model.I_PP_Cost_Collector.Table_Name)
-			.getPO(getPP_Cost_Collector_ID(), get_TrxName());	}
-
 	/** Set Manufacturing Cost Collector.
 		@param PP_Cost_Collector_ID Manufacturing Cost Collector	  */
 	public void setPP_Cost_Collector_ID (int PP_Cost_Collector_ID)
@@ -1250,11 +1245,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
-
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Order)MTable.get(getCtx(), org.eevolution.model.I_PP_Order.Table_Name)
-			.getPO(getPP_Order_ID(), get_TrxName());	}
 
 	/** Set Manufacturing Order.
 		@param PP_Order_ID 

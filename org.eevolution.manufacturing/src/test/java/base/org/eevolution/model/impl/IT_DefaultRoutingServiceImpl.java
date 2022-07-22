@@ -20,6 +20,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.wf.MWFNode;
 import org.compiere.wf.MWorkflow;
+import org.eevolution.manufacturing.model.impl.DefaultRoutingServiceImpl;
 import org.eevolution.model.RoutingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

@@ -45,7 +45,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.eevolution.form.crp.CRPDatasetFactory;
 import org.eevolution.form.crp.CRPModel;
-import org.eevolution.tools.worker.SingleWorker;
+import org.eevolution.manufacturing.worker.SingleWorker;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.encoders.EncoderUtil;
 import org.jfree.chart.encoders.ImageFormat;

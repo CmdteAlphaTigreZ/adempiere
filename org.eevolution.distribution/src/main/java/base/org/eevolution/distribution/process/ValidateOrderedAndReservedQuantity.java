@@ -27,10 +27,10 @@ import org.compiere.model.Query;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrderLine;
 import org.eevolution.distribution.model.I_DD_OrderLine;
-import org.eevolution.model.I_PP_Order;
-import org.eevolution.model.I_PP_Order_BOMLine;
-import org.eevolution.model.MPPOrder;
-import org.eevolution.model.MPPOrderBOMLine;
+import org.eevolution.manufacturing.model.I_PP_Order;
+import org.eevolution.manufacturing.model.I_PP_Order_BOMLine;
+import org.eevolution.manufacturing.model.MPPOrder;
+import org.eevolution.manufacturing.model.MPPOrderBOMLine;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

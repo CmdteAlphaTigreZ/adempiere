@@ -58,8 +58,6 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.RefactoryUtil;
 import org.eevolution.model.I_HR_Process;
-import org.eevolution.model.I_PP_Cost_Collector;
-import org.eevolution.model.I_PP_Order;
 
 /**
  *	Document Action Engine
@@ -1211,7 +1209,7 @@ public class DocumentEngine implements DocAction
 		/********************
 		 *  Manufacturing Order
 		 */
-		else if (tableId == I_PP_Order.Table_ID)
+		else if (tableId == RefactoryUtil.PP_Order_Table_ID)
 		{
 			if (docStatus.equals(STATUS_Drafted)
 					|| docStatus.equals(STATUS_InProgress)
@@ -1230,7 +1228,7 @@ public class DocumentEngine implements DocAction
 		/********************
 		 *  Manufacturing Cost Collector
 		 */
-		else if (tableId == I_PP_Cost_Collector.Table_ID)
+		else if (tableId == RefactoryUtil.PP_Cost_Collector_Table_ID)
 		{
 			if (docStatus.equals(STATUS_Drafted)
 					|| docStatus.equals(STATUS_InProgress)

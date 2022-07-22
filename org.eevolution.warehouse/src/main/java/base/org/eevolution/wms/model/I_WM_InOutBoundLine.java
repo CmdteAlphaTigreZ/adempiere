@@ -569,8 +569,6 @@ public interface I_WM_InOutBoundLine
 	  */
 	public int getPP_MRP_ID();
 
-	public org.eevolution.model.I_PP_MRP getPP_MRP() throws RuntimeException;
-
     /** Column name PP_Order_BOMLine_ID */
     public static final String COLUMNNAME_PP_Order_BOMLine_ID = "PP_Order_BOMLine_ID";
 
@@ -579,8 +577,6 @@ public interface I_WM_InOutBoundLine
 
 	/** Get Manufacturing Order BOM Line	  */
 	public int getPP_Order_BOMLine_ID();
-
-	public org.eevolution.model.I_PP_Order_BOMLine getPP_Order_BOMLine() throws RuntimeException;
 
     /** Column name PP_Order_ID */
     public static final String COLUMNNAME_PP_Order_ID = "PP_Order_ID";
@@ -594,8 +590,6 @@ public interface I_WM_InOutBoundLine
 	  * Manufacturing Order
 	  */
 	public int getPP_Order_ID();
-
-	public org.eevolution.model.I_PP_Order getPP_Order() throws RuntimeException;
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

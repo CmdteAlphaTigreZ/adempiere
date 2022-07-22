@@ -590,11 +590,6 @@ public class X_I_Product_BOM extends PO implements I_I_Product_BOM, I_Persistent
 		return (String)get_Value(COLUMNNAME_OrgValue);
 	}
 
-	public org.eevolution.model.I_PP_Product_BOMLine getPP_Product_BOMLine() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_BOMLine)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOMLine.Table_Name)
-			.getPO(getPP_Product_BOMLine_ID(), get_TrxName());	}
-
 	/** Set BOM Line.
 		@param PP_Product_BOMLine_ID 
 		BOM Line
@@ -617,12 +612,6 @@ public class X_I_Product_BOM extends PO implements I_I_Product_BOM, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
-
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
-    {
-		return (org.eevolution.model.I_PP_Product_BOM)MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-			.getPO(getPP_Product_BOM_ID(), get_TrxName());	}
-
 	/** Set BOM & Formula.
 		@param PP_Product_BOM_ID 
 		BOM & Formula

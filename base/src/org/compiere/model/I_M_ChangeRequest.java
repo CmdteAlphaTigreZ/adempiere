@@ -225,8 +225,6 @@ public interface I_M_ChangeRequest
 	  */
 	public int getPP_Product_BOM_ID();
 
-	public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
-
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 

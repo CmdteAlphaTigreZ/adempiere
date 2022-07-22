@@ -27,11 +27,12 @@ import org.compiere.model.MMovementLine;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MTransaction;
+import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.RefactoryUtil;
 import org.compiere.util.Util;
-import org.eevolution.model.MPPCostCollector;
 
 /**
  * @author anca_bradau
@@ -431,11 +432,13 @@ public abstract class AbstractCostingMethod implements ICostingMethod {
 		}
 
 		if (cost.getPP_Cost_Collector_ID() != 0) {
-			MPPCostCollector costCollector = (MPPCostCollector) cost.getPP_Cost_Collector();
-			costCollector.setPosted(false);
-			costCollector.saveEx();
-			recordId = costCollector.get_ID();
-			tableId = costCollector.get_Table_ID();
+			PO costCollector = RefactoryUtil.getCostCollector(cost.getCtx(), cost.getPP_Cost_Collector_ID(), cost.get_TrxName());
+			if(costCollector != null) {
+				costCollector.set_ValueOfColumn("Posted", false);
+				costCollector.saveEx();
+				recordId = costCollector.get_ID();
+				tableId = costCollector.get_Table_ID();
+			}
 		}
 		int no = DB.executeUpdateEx(sqldelete, new Object[] { recordId, tableId }, cost.get_TrxName());
 	}

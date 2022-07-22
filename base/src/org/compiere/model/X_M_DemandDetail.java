@@ -158,11 +158,6 @@ public class X_M_DemandDetail extends PO implements I_M_DemandDetail, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.compiere.model.I_M_ForecastLine getM_ForecastLine() throws RuntimeException
-    {
-		return (org.compiere.model.I_M_ForecastLine)MTable.get(getCtx(), org.compiere.model.I_M_ForecastLine.Table_Name)
-			.getPO(getM_ForecastLine_ID(), get_TrxName());	}
-
 	/** Set Forecast Line.
 		@param M_ForecastLine_ID 
 		Forecast Line

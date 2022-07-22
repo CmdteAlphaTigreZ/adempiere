@@ -41,6 +41,7 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.RefactoryUtil;
 import org.compiere.util.Util;
 import org.eevolution.model.MPPProductBOM;
 import org.eevolution.model.MPPProductBOMLine;
@@ -1410,6 +1411,7 @@ public class MOrder extends X_C_Order implements DocAction
 				//	New Lines
 				int lineNo = line.getLine ();
 				//find default BOM with valid dates and to this product
+//				RefactoryUtil
 				MPPProductBOM bom = MPPProductBOM.get(product, getAD_Org_ID(),getDatePromised(), get_TrxName());
 				if(bom != null)
 				{	

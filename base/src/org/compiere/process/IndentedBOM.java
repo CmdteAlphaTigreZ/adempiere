@@ -25,10 +25,11 @@ import org.adempiere.util.StringUtils;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MCost;
 import org.compiere.model.MProduct;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.model.X_T_BOM_Indented;
 import org.compiere.util.Env;
-import org.eevolution.model.MPPProductBOMLine;
+import org.compiere.util.RefactoryUtil;
 
 /**
  * Cost Multi-Level BOM & Formula Review
@@ -126,13 +127,14 @@ public class IndentedBOM extends SvrProcess
 
 		BigDecimal llCost = Env.ZERO;
 		BigDecimal llFutureCost = Env.ZERO;
-		List<MPPProductBOMLine> list = getBOMs(product);
-		for (MPPProductBOMLine bom : list)
+		List<PO> list = RefactoryUtil.getBOMs(product);
+		for (PO bom : list)
 		{
 			m_LevelNo++;
-			llCost ll = explodeProduct(bom.getM_Product_ID(), bom.getQtyBOM(), accumQty.multiply(bom.getQtyBOM()));
-			llCost = llCost.add(ll.currentCost.multiply(accumQty.multiply(bom.getQtyBOM())));
-			llFutureCost = llFutureCost.add(ll.futureCost.multiply(accumQty.multiply(bom.getQtyBOM())));
+			BigDecimal quantityBOM = (BigDecimal) bom.get_Value("QtyBOM");
+			llCost ll = explodeProduct(bom.get_ValueAsInt("M_Product_ID"), quantityBOM, accumQty.multiply(quantityBOM));
+			llCost = llCost.add(ll.currentCost.multiply(accumQty.multiply(quantityBOM)));
+			llFutureCost = llFutureCost.add(ll.futureCost.multiply(accumQty.multiply(quantityBOM)));
 			m_LevelNo--;
 		}
 
@@ -159,29 +161,6 @@ public class IndentedBOM extends SvrProcess
 		tboml.saveEx();
 		return retVal;
 		
-	}
-
-	/**
-	 * Get BOMs for given product
-	 * @param product
-	 * @param isComponent
-	 * @return list of MProductBOM
-	 */
-	private List<MPPProductBOMLine> getBOMs(MProduct product)
-	{
-		
-		log.severe(" PRODUCT NAME = " + product.getName() ) ;
-		
-		StringBuffer whereClause = new StringBuffer();
-		whereClause.append(MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID);
-		whereClause.append(" IN ( SELECT PP_Product_BOM_ID FROM PP_Product_BOM ");
-		whereClause.append(" WHERE M_Product_ID = " + product.get_ID() + " ) ");
-		
-		List<MPPProductBOMLine> list = new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause.toString(), null)
-									.setOnlyActiveRecords(true)
-									.setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
-									.list();
-		return list;
 	}
 	
 	private class llCost {

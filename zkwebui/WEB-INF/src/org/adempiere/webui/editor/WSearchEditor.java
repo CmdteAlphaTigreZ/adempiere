@@ -55,8 +55,8 @@ import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.RefactoryUtil;
 import org.compiere.util.Trx;
-import org.eevolution.model.I_PP_Product_BOMLine;
 import org.zkforge.keylistener.Keylistener;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
@@ -658,7 +658,7 @@ public class WSearchEditor extends WEditor implements ContextMenuListener, Value
 				// TODO hard-coded - add to AD_Column?
 				multipleSelection = (MOrderLine.Table_ID ==  AD_Table_ID) || 
 									(MInvoiceLine.Table_ID == AD_Table_ID) || 
-									(I_PP_Product_BOMLine.Table_ID == AD_Table_ID) || 
+									(RefactoryUtil.PP_Order_BOMLine_Table_ID == AD_Table_ID) || 
 									(MProductPrice.Table_ID == AD_Table_ID);
 			}
 			//	Show Info

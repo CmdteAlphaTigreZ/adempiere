@@ -77,9 +77,9 @@ import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.Msg;
 import org.compiere.util.NamePair;
+import org.compiere.util.RefactoryUtil;
 import org.compiere.util.Trx;
 import org.compiere.util.ValueNamePair;
-import org.eevolution.model.I_PP_Product_BOMLine;
 
 /**
  *  Lookup Visual Field.
@@ -1044,7 +1044,7 @@ public class VLookup extends JComponent
 				// TODO hard-coded - add to AD_Column?
 				multipleSelection = (MOrderLine.Table_ID ==  AD_Table_ID) || 
 									(MInvoiceLine.Table_ID == AD_Table_ID) || 
-									(I_PP_Product_BOMLine.Table_ID == AD_Table_ID) || 
+									(RefactoryUtil.PP_Order_BOMLine_Table_ID == AD_Table_ID) || 
 									(MProductPrice.Table_ID == AD_Table_ID);
 			}
 			//	Show Info

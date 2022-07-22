@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MProduct;
+import org.eevolution.manufacturing.model.I_PP_Order;
+import org.eevolution.manufacturing.model.MPPOrder;
+import org.eevolution.manufacturing.model.MPPProductBOM;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 

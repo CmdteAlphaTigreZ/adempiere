@@ -47,7 +47,7 @@ import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.eevolution.distribution.model.MDDOrderLine;
-import org.eevolution.model.I_PP_Cost_Collector;
+import org.eevolution.manufacturing.model.I_PP_Cost_Collector;
 
 /**
  * Class Model for Inbound & Outbound Operation Line
