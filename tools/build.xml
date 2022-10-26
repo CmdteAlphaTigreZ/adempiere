@@ -95,6 +95,10 @@
 			<zipfileset src="${jboss.dir}/client/jboss-ejb3x.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
+			<!-- Mail				-->
+			<zipfileset src="lib/mail.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<zipfileset src="${jboss.dir}/client/jboss-ejb3-client.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
@@ -116,6 +120,10 @@
 			<zipgroupfileset dir="${glassfish.dir}/lib" includes="*.jar">
 				<patternset refid="manifest.exclude" />
 			</zipgroupfileset>
+			<!-- Mail				-->
+			<zipfileset src="lib/mail.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<zipfileset src="lib/javaee.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
