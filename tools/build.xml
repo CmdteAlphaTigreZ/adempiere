@@ -206,7 +206,10 @@
 
 		<!-- Create CSTools jar		-->
 		<jar jarfile="${dist.dir}/CSTools.jar" duplicate="preserve">
-
+			<!-- Mail				-->
+			<zipfileset src="lib/mail.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<!-- services entries -->
 			<fileset dir=".">
 				<include name="META-INF/services/**" />
