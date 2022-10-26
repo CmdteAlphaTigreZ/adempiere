@@ -92,11 +92,11 @@
 	<target name="toolsAppsServer" depends="toolsCompile" unless="jars.uptodate" description="Create JBoss Client jar">
 		<!-- Create jboss.jar file 	-->
 		<jar jarfile="${dist.dir}/jboss.jar" duplicate="preserve">
-			<zipfileset src="${jboss.dir}/client/jboss-ejb3x.jar">
-				<patternset refid="manifest.exclude" />
-			</zipfileset>
 			<!-- Mail				-->
 			<zipfileset src="lib/mail.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
+			<zipfileset src="${jboss.dir}/client/jboss-ejb3x.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="${jboss.dir}/client/jboss-ejb3-client.jar">
@@ -117,13 +117,13 @@
 		</jar>
 
 		<jar jarfile="${dist.dir}/glassfish.jar" duplicate="preserve">
-			<zipgroupfileset dir="${glassfish.dir}/lib" includes="*.jar">
-				<patternset refid="manifest.exclude" />
-			</zipgroupfileset>
 			<!-- Mail				-->
 			<zipfileset src="lib/mail.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
+			<zipgroupfileset dir="${glassfish.dir}/lib" includes="*.jar">
+				<patternset refid="manifest.exclude" />
+			</zipgroupfileset>
 			<zipfileset src="lib/javaee.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
