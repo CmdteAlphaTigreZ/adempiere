@@ -92,6 +92,10 @@
 	<target name="toolsAppsServer" depends="toolsCompile" unless="jars.uptodate" description="Create JBoss Client jar">
 		<!-- Create jboss.jar file 	-->
 		<jar jarfile="${dist.dir}/jboss.jar" duplicate="preserve">
+			<!-- Mail				-->
+			<zipfileset src="lib/01-mail.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<zipfileset src="${jboss.dir}/client/jboss-ejb3x.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
@@ -199,11 +203,15 @@
 		<!-- Create CSTools jar		-->
 		<jar jarfile="${dist.dir}/CSTools.jar" duplicate="preserve">
 
+			<!-- Mail				-->
+			<zipfileset src="lib/01-mail.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<!-- services entries -->
 			<fileset dir=".">
 				<include name="META-INF/services/**" />
 			</fileset>
-
+			
 			<!-- JSTL				-->
 			<zipfileset src="lib/jstl.jar">
 				<patternset refid="manifest.exclude" />
@@ -275,6 +283,9 @@
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<!-- PDF -->
+			<zipfileset src="lib/iText-2.1.7.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<zipfileset src="lib/icepdf-core-6.2.2.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
@@ -363,20 +374,20 @@
 				<attribute name="Implementation-URL" value="http://www.adempiere.net" />
 			</manifest>
 			<!-- Commons -->
-			<zipfileset src="lib/commons-collections-3.2.2.jar">
+			<zipfileset src="lib/commons-collections-3.1.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="lib/commons-collections4-4.1.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
-			<zipfileset src="lib/commons-codec-1.6.jar">
+			<zipfileset src="lib/commons-codec-1.10.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
-			<zipfileset src="lib/commons-validator-1.7.jar">
+			<zipfileset src="lib/commons-validator-1.6.jar">
 				<patternset refid="manifest.exclude"/>
 			</zipfileset>
 			<!-- jars for 2pack                         -->
-			<zipfileset src="lib/ant/apache-ant-1.10.9/lib/ant.jar">
+			<zipfileset src="lib/ant.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="lib/xercesImpl.jar">
@@ -449,7 +460,7 @@
 				<include name="it/**" />
 			</fileset>
 			<!-- Mail				-->
-			<zipfileset src="lib/mail.jar">
+			<zipfileset src="lib/01-mail.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<!-- Installing Script Based in JSR 223 Scripting APIs -->
@@ -528,13 +539,16 @@
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<!-- jars for 2pack                         -->
-			<zipfileset src="lib/ant/apache-ant-1.10.9/lib/ant.jar">
+			<zipfileset src="lib/ant.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="lib/xercesImpl.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<!-- PDF -->
+			<zipfileset src="lib/iText-2.1.7.jar">
+				<patternset refid="manifest.exclude" />
+			</zipfileset>
 			<zipfileset src="lib/icepdf-core-6.2.2.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
@@ -615,16 +629,16 @@
 				<attribute name="Implementation-URL" value="http://www.adempiere.net" />
 			</manifest>
 			<!-- Commons -->
-			<zipfileset src="lib/commons-collections-3.2.2.jar">
+			<zipfileset src="lib/commons-collections-3.1.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="lib/commons-collections4-4.1.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
-			<zipfileset src="lib/commons-codec-1.6.jar">
+			<zipfileset src="lib/commons-codec-1.10.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
-			<zipfileset src="lib/commons-validator-1.7.jar">
+			<zipfileset src="lib/commons-validator-1.6.jar">
 				<patternset refid="manifest.exclude"/>
 			</zipfileset>
 			<zipfileset src="lib/ooxml-schemas-1.3.jar">
