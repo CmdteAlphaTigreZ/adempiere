@@ -51,8 +51,6 @@ import org.compiere.model.MClient;
 import org.compiere.model.MEMailConfig;
 import org.compiere.model.MSysConfig;
 
-import com.sun.mail.smtp.SMTPMessage;
-import com.sun.mail.smtp.SMTPTransport;
 
 /**
  *	EMail Object.
@@ -243,7 +241,7 @@ public final class EMail implements Serializable
 	/**	UserName and Password		*/
 	private EMailAuthenticator	auth = null;
 	/**	Message						*/
-	private SMTPMessage 		msg = null;
+	private MimeMessage 		msg = null;
 	/**	User						*/
 	private String				user = null;
 	/**	Token						*/
@@ -261,8 +259,6 @@ public final class EMail implements Serializable
 	private Store 				store = null;
 	/**	Session				*/
 	private Session 			session = null;
-	/**	Transport			*/
-	private Transport 			transport = null;
 
 	/**	Mail Sent OK Status				*/
 	public static final String      SENT_OK = "OK";
@@ -296,36 +292,36 @@ public final class EMail implements Serializable
 	 * @return
 	 * @throws MessagingException
 	 */
-	public Transport getTransport(Session session) throws MessagingException {
-		if (transport != null)
-			return transport;
-		if(getAuthMechanism().equals(MEMailConfig.AUTHMECHANISM_OAuth)) {
-			transport = new SMTPTransport(session, null);
-			transport.connect(getSmtpHost(), getPort(), user, token);
-		} else {
-			transport = session.getTransport(getStringProtocol());
-			transport.connect();
-		}
-		//	
-		this.session = session;
-		//	Log
-		log.fine("transport=" + transport);
-		log.fine("transport connected");
-		//	Default Return
-		return transport;
-	}
+//	public Transport getTransport(Session session) throws MessagingException {
+//		if (transport != null)
+//			return transport;
+//		if(getAuthMechanism().equals(MEMailConfig.AUTHMECHANISM_OAuth)) {
+//			transport = new Transport(session, null);
+//			transport.connect(getSmtpHost(), getPort(), user, token);
+//		} else {
+//			transport = session.getTransport(getStringProtocol());
+//			transport.connect();
+//		}
+//		//	
+//		this.session = session;
+//		//	Log
+//		log.fine("transport=" + transport);
+//		log.fine("transport connected");
+//		//	Default Return
+//		return transport;
+//	}
 	
 	/**
 	 * Get transport without session
 	 * @return
 	 * @throws MessagingException
 	 */
-	public Transport getTransport() throws MessagingException {
-		if (transport != null)
-			return transport;
-		//	
-		return getTransport(getSession());
-	}
+//	public Transport getTransport() throws MessagingException {
+//		if (transport != null)
+//			return transport;
+//		//	
+//		return getTransport(getSession());
+//	}
 	
 	/**
 	 * Get default folder
@@ -395,7 +391,7 @@ public final class EMail implements Serializable
 
 		try
 		{
-			msg = new SMTPMessage(getSession());
+			msg = new MimeMessage(getSession());
 			//	Addresses
 			msg.setFrom(from);
 			InternetAddress[] rec = getTos();
@@ -415,18 +411,17 @@ public final class EMail implements Serializable
 			msg.setSentDate(new java.util.Date());
 			msg.setHeader("Comments", "AdempiereMail");
 			//	SMTP specifics
-			msg.setAllow8bitMIME(true);
 			//	Send notification on Failure & Success - no way to set envid in Java yet
 			//	Bounce only header
-			msg.setReturnOption (SMTPMessage.RETURN_HDRS);
+//			msg.setReturnOption (SMTPMessage.RETURN_HDRS);
 			//
 			setContent();
 			msg.saveChanges();
 			log.fine("message =" + msg);
 			//
-			getTransport();
+//			getTransport();
 			Transport.send(msg);
-			log.fine("Success - MessageID=" + msg.getMessageID());
+			log.fine("Success - MessageID=" + msg.getMessageNumber());
 		}
 		catch (MessagingException me)
 		{
@@ -842,7 +837,7 @@ public final class EMail implements Serializable
 		try
 		{
 			if (msg != null)
-				return msg.getMessageID ();
+				return msg.getMessageID();
 		}
 		catch (MessagingException ex)
 		{
