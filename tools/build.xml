@@ -92,10 +92,6 @@
 	<target name="toolsAppsServer" depends="toolsCompile" unless="jars.uptodate" description="Create JBoss Client jar">
 		<!-- Create jboss.jar file 	-->
 		<jar jarfile="${dist.dir}/jboss.jar" duplicate="preserve">
-			<!-- Mail				-->
-			<zipfileset src="lib/mail.jar">
-				<patternset refid="manifest.exclude" />
-			</zipfileset>
 			<zipfileset src="${jboss.dir}/client/jboss-ejb3x.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
@@ -117,10 +113,6 @@
 		</jar>
 
 		<jar jarfile="${dist.dir}/glassfish.jar" duplicate="preserve">
-			<!-- Mail				-->
-			<zipfileset src="lib/mail.jar">
-				<patternset refid="manifest.exclude" />
-			</zipfileset>
 			<zipgroupfileset dir="${glassfish.dir}/lib" includes="*.jar">
 				<patternset refid="manifest.exclude" />
 			</zipgroupfileset>
@@ -206,10 +198,7 @@
 
 		<!-- Create CSTools jar		-->
 		<jar jarfile="${dist.dir}/CSTools.jar" duplicate="preserve">
-			<!-- Mail				-->
-			<zipfileset src="lib/mail.jar">
-				<patternset refid="manifest.exclude" />
-			</zipfileset>
+
 			<!-- services entries -->
 			<fileset dir=".">
 				<include name="META-INF/services/**" />
@@ -387,7 +376,7 @@
 				<patternset refid="manifest.exclude"/>
 			</zipfileset>
 			<!-- jars for 2pack                         -->
-			<zipfileset src="lib/ant/apache-ant-1.10.9/lib/ant.jar">
+			<zipfileset src="lib/ant/apache-ant-1.10.10/lib/ant.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="lib/xercesImpl.jar">
@@ -539,7 +528,7 @@
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<!-- jars for 2pack                         -->
-			<zipfileset src="lib/ant/apache-ant-1.10.9/lib/ant.jar">
+			<zipfileset src="lib/ant/apache-ant-1.10.10/lib/ant.jar">
 				<patternset refid="manifest.exclude" />
 			</zipfileset>
 			<zipfileset src="lib/xercesImpl.jar">
