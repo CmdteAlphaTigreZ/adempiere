@@ -9,10 +9,6 @@ on:
   release:
     types: 
       - published
-  push:
-    branches: [ "master", "develop", "bugfix/*", "feature/*" ]
-  pull_request:
-    branches: [ "master", "develop", "bugfix/*", "feature/*" ]
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
