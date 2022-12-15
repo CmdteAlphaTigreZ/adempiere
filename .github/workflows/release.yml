@@ -44,7 +44,7 @@ jobs:
       
       # Ensure a compatible version of java is used
       - name: Setup Java JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v1.4.3
         with:
             java-version: '11'
             java-package: jdk
