@@ -49,12 +49,11 @@ jobs:
             java-version: '11'
             java-package: jdk
 
-      # Build ADempiere with ant, if there are no changes in XML files
-      - name: Build Adempiere without database restore...
-        if: steps.changed-files.outputs.xml-files == 'false'
+      # Build ADempiere with ant, if there are changes in XML files
+      - name: Build Adempiere with database restore...
         uses: ./.github/actions/adempiere-build
         with:
-           nodbrestore: true
+           nodbrestore: false
            
       - name: Upload zip
         uses: skx/github-action-publish-binaries@master
