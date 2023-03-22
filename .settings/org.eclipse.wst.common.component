@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                	
+                                    	
+    
     
     
     
@@ -8,20 +9,43 @@
     
     
     <wb-module deploy-name="Adempiere_trunk">
-                
+                        
+        
         <wb-resource deploy-path="/" source-path="/zkwebui"/>
-                
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.adempiere.project/src/main/java"/>
-                
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.adempiere.request/src/main/java"/>
-                
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.finance_management/src/main/java/base"/>
-                
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/base/src"/>
-                
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.store/src/main/java"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.eevolution.distribution/src/main/java/base"/>
-                                
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/base/test/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/serverRoot/src/test/server"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/zkwebui/WEB-INF/test/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.hr_time_and_attendance/src/main/java/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.eevolution.manufacturing/src/test/java/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.adempiere.asset/src/test/java/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.adempiere.test/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.eevolution.warehouse/src/main/java/ui/zk"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.loan_management/src/main/java/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.loan_management/src/main/java/ui/zk"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.loan_management/src/main/java/ui/swing"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.compiere.mobile/WEB-INF/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.notifier.telegram/src/main/java/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.notifier.discord/src/main/java/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/org.spin.authentication/src/main/java/base"/>
+                                        
+        
         
         
         
@@ -29,7 +53,8 @@
         
         
         <dependent-module archiveName="jasperreports-fonts-6.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/adempiere/JasperReportsTools/lib/jasperreports-fonts-6.6.0.jar">
-                                                                                                            
+                                                                                                                        
+            
             
             
             
@@ -38,7 +63,8 @@
             
             
             <dependency-type>uses</dependency-type>
-                                                                                                        
+                                                                                                                    
+        
         
         
         
@@ -47,7 +73,8 @@
         
         
         </dependent-module>
-                                                                        
+                                                                                
+        
         
         
         
@@ -56,7 +83,8 @@
         
         
         <dependent-module archiveName="jasperreports-6.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/adempiere/JasperReportsTools/lib/jasperreports-6.6.0.jar">
-                                                                                                            
+                                                                                                                        
+            
             
             
             
@@ -65,7 +93,8 @@
             
             
             <dependency-type>uses</dependency-type>
-                                                                                                        
+                                                                                                                    
+        
         
         
         
@@ -74,7 +103,8 @@
         
         
         </dependent-module>
-                                                                		
+                                                                        		
+        
         
         
         
@@ -83,7 +113,8 @@
         
         
         <property name="java-output-path" value="build/classes"/>
-                                                                		
+                                                                        		
+        
         
         
         
@@ -92,7 +123,8 @@
         
         
         <property name="context-root" value="webui"/>
-                                                                	
+                                                                        	
+    
     
     
     
@@ -101,7 +133,8 @@
     
     
     </wb-module>
-                                
+                                    
+
 
 
 
