@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -64,18 +65,32 @@ public class MReportTree {
 		return tree;	
 	}	//	get
 
+	
+	/**
+	 * Get Where Clause
+	 * @param ctx
+	 * @param hierarchyId
+	 * @param elementType
+	 * @param dimensionId
+	 * @return
+	 */
+	public static String getWhereClause (Properties ctx, int hierarchyId, String elementType, int dimensionId){
+		return getWhereClause(ctx, hierarchyId, elementType, dimensionId, null);
+	}	//	getWhereClause
+	
 	/**
 	 * 	Get Where Clause
 	 *	@param ctx context
 	 *	@param hierarchyId optional hierarchy
 	 *	@param elementType Account Schema Element Type
 	 *	@param dimensionId leaf element id
+	 **	@param fromAlias from alias
 	 *	@return where clause
 	 */
-	public static String getWhereClause (Properties ctx, int hierarchyId, String elementType, int dimensionId)
+	public static String getWhereClause (Properties ctx, int hierarchyId, String elementType, int dimensionId, String fromAlias)
 	{
 		MReportTree tree = get (ctx, hierarchyId, elementType);
-		return tree.getWhereClause(dimensionId);
+		return tree.getWhereClause(dimensionId,fromAlias);
 	}	//	getWhereClause
 
 	/**
@@ -222,8 +237,20 @@ public class MReportTree {
 	 */	
 	public String getWhereClause (int id)
 	{
+		return getWhereClause(id, null);
+	}	//	getWhereClause
+	
+	/**
+	 * 	Get Where Clause
+	 *	@param id start node
+	 *	@return ColumnName = 1 or ColumnName IN(1, 2, 3)
+	 */	
+	public String getWhereClause (int id, String fromAlias)
+	{
 		logger.fine("(" + elementType + ") ID=" + id);
-		String columnName = MAcctSchemaElement.getColumnName(elementType);
+		String columnName = Optional.ofNullable(fromAlias)
+									.orElse("")
+									.concat(MAcctSchemaElement.getColumnName(elementType));
 		//
 		MTreeNode node = tree.getRoot().findNode(id);
 		logger.finest("Root=" + node);
