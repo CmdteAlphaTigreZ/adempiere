@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -250,7 +251,7 @@ public class ImportOrder extends ImportOrderAbstract {
                                                     && importOrder.getC_BPartner_Location_ID() == partnerLocationId
                                                     && importOrder.getBillTo_ID() == billToId
                                                     && importOrder.getC_DocType_ID() == documentTypeId
-                                                    && importOrder.getDocumentNo().equals(documentNo)) {
+                                                    && Optional.ofNullable(importOrder.getDocumentNo()).orElse("").equals(Optional.ofNullable(documentNo).orElse(""))) {
                                                 //Update the Attributes Order with first import Order
                                                 if (firstImportOrderId > 0 && importOrderId == firstImportOrderId)
                                                     updateOrder(order, importOrder);
